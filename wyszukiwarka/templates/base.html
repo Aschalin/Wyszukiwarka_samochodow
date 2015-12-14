@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html {% block html_extra %}{% endblock %}>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Wyszukiwarka{% endblock %}</title>
+    </head>
+        <a href="{% url 'index' %}"> Strona Główna</a> |
+    	<a href="{% url 'wyszukiwanie' %}"> Wyszukaj</a> |
+    	<a href="{% url 'przegladanie' %}"> Przeglądaj</a> |
+    	<hr/>
+    	</br></br>
+    {% block content %}
+    {% endblock %}
+</html>

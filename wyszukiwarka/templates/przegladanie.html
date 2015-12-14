@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+Wyszukane Pojazdy:
+    <table>
+        {% for c in cars %}
+            <th></th>
+            <tr>
+                <td>{{c.id}}</td>
+                <td>{{c.Model}}</td>
+                <td>{{c.Marka}}</td>
+                <td>{{c.Rocznik}}</td>
+                <td>{{c.Cena}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
