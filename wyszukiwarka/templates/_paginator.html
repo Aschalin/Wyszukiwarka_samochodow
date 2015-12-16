@@ -1,0 +1,15 @@
+<div class="pagination">
+    <span class="step-links">
+        {% if pagin.has_previous %}
+            <button type="submit" name="page" value="{{ pagin.previous_page_number }}">previous</button>
+        {% endif %}
+
+        {% for p in pagin.paginator.page_range %}
+            <input type="submit" name="page" value="{{p}}" />
+        {% endfor %}
+        
+        {% if pagin.has_next %}
+            <button type="submit" name="page" value="{{ pagin.next_page_number }}">next</button>
+        {% endif %}
+    </span>
+</div>

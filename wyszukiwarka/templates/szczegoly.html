@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<H1>{{car.Marka}} {{car.Model}}</H1>
+<br><br>
+    <table>
+            <th></th>
+            <tr><td>Marka:   </td><td>{{car.Marka}}</td></tr>
+            <tr><td>Model:   </td><td>{{car.Model}}</td></tr>
+            <tr><td>Rocznik: </td><td>{{car.Rocznik}}</td></tr>
+            <tr><td>cena:    </td><td>{{car.Cena}}</td></tr>
+            </tr>
+    </table>
+{% endblock %}

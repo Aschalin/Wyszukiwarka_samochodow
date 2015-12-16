@@ -1,28 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <table>
-        {% for f in files %}
-            <th></th>
-            <tr>
-                <td>{{f.id}}</td>        
-                <td>{{f.title}}</td>
-                <td>[ {{f.keywords}} ]</td>
-                <td>
-                    {% if f.media_file %} 
-                         <video width="240" height="128" controls>
-                            <source src="{{f.media_file.url}}" type="video/mp4">
-                            <source src="{{f.media_file.url}}" type="video/ogg">
-                            Your browser does not support the video tag.
-                        </video> 
-                        <a href="{{f.media_file.url}}" target="blank"> {{f.media_file.url}} </a>
-                    {% endif %} 
-                </td>
-                <td>
-                    <form method="post" action="{% url 'delmedia' f.id %} ">{% csrf_token %}<input type="submit" value="Delete" /></form>
-                    <form method="get" action="{% url 'editmedia' f.id %} "><input type="submit" value="Edit" /></form>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+        <form id="page_form" method="POST" action="{% url 'przegladanie' %}">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {{ field.help_text }}:<br>
+                {{ field }}
+                <br><br>
+            {% endfor %}
+            <input type="submit" name="submit" value="Wyszukaj" />
+        </form>
 {% endblock %}
