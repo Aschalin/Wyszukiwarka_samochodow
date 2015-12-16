@@ -1,6 +1,5 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 from models import *
@@ -15,28 +14,47 @@ def index(request):
 
 def wyszukiwanie(request):
     c={}
-    form=SearchForm(request.POST)
+    if request.method=='POST':
+        form=SearchForm(request.POST)
+        if form.is_valid():
+            wyszukiwanie = form.save(commit=False)
+            wyszukiwanie.save()
+            return redirect("/przegladanie/" + str(wyszukiwanie.id))
+    else:
+        form=SearchForm()
     c['form']=form
     return render(request, "wyszukiwanie.html", c)
 
 
-def przegladanie(request):
+def przegladanie(request, s_id=0):
     c={}
     baseCars = Samochody.objects.all()
-    page = request.POST.get('page')
-    form=HiddenSearchForm(request.POST)
-    if request.method=='POST':
-        marka = request.POST.get('Marka')
-        model = request.POST.get('Model')
-        cena_od = request.POST.get('cena_od')
-        if marka:
-            baseCars = baseCars.filter(Marka = marka)
-        if model:
-            baseCars = baseCars.filter(Model = model)
-        if cena_od:
-            baseCars = baseCars.filter(Cena__gte = cena_od)
+
+    #marka = request.POST.get('Marka')
+    #model = request.POST.get('Model')
+    #cena_od = request.POST.get('cena_od')
+    #cena_do = request.POST.get('cena_do')
+    #rocznik_od = request.POST.get('rocznik_od')
+    #rocznik_do = request.POST.get('rocznik_do')
+    try:
+        szukane = Wyszukiwanie.objects.get(id = s_id)
+        if szukane.Marka:
+            baseCars = baseCars.filter(Marka = szukane.Marka)
+        if szukane.Model:
+            baseCars = baseCars.filter(Model = szukane.Model)
+        if szukane.Cena_od:
+            baseCars = baseCars.filter(Cena__gte = szukane.Cena_od)
+        if szukane.Cena_do:
+            baseCars = baseCars.filter(Cena__lte = szukane.Cena_do)
+        if szukane.Rocznik_od:
+            baseCars = baseCars.filter(Rocznik__gte = szukane.Rocznik_od)
+        if szukane.Rocznik_do:
+            baseCars = baseCars.filter(Rocznik__lte = szukane.Rocznik_do)
+    except:
+        s_id=0
+
     baseCars = baseCars.order_by('Marka')
-    page = request.POST.get('page')
+    page = request.GET.get('page')
     if not page:
         page=1
     paginator = Paginator(baseCars, 10)
@@ -47,22 +65,26 @@ def przegladanie(request):
     except EmptyPage:
         cars = paginator.page(paginator.num_pages)
     c['cars']=cars
-    c['form']=form
-    c['page']=page
+    c['s_id']=s_id
     return render(request, "przegladanie.html", c)
 
-def szczegoly(request):
+def szczegoly(request, s_id):
     c={}
     id=request.GET.get('id')
     car = Samochody.objects.get(id=id)
+    nadwozia = Nadwozia.objects.all()
+    nadwozia = nadwozia.filter(Samochod = car)
     c['car'] = car
+    c['s_id'] = s_id
+    c['nadwozia'] = nadwozia
     return render(request, "szczegoly.html", c)
 
-def porownanie(request):
+def porownanie(request, s_id):
     c={}
     id=request.GET.getlist('cars')
     cars = Samochody.objects.all()
     cars = cars.filter(id__in=id)
     c['cars'] = cars
     c['ids'] = id
+    c['s_id']=s_id
     return render(request, "porownanie.html", c)

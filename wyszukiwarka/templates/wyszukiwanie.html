@@ -1,14 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-        <form id="page_form" method="POST" action="{% url 'przegladanie' %}">
+        <form id="page_form" method="POST" action="{% url 'wyszukiwanie' %}">
             {% csrf_token %}
-            {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text }}:<br>
-                {{ field }}
-                <br><br>
-            {% endfor %}
+            {{ form.as_p }}
             <input type="submit" name="submit" value="Wyszukaj" />
         </form>
 {% endblock %}

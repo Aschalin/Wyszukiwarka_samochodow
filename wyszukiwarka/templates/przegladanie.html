@@ -2,15 +2,14 @@
 
 {% block content %}
 Wyszukane Pojazdy:<br>
-strona {{page}}<br><br>
     <table>
-        <form id="comparison" method="GET" action="{% url 'porownanie' %}">
+        <form id="comparison" method="GET" action="{% url 'porownanie' s_id %}">
             <input type="submit" value="porównaj">
             {% for c in cars %}
                 <th></th>
                 <tr>
                     <td><input type="checkbox" name="cars" value="{{c.id}}"></td>
-                    <td><a href="/szczegoly/?id={{c.id}}">{{c.Marka}}</a></td>
+                    <td><a href="/szczegoly/{{s_id}}/?id={{c.id}}">{{c.Marka}}</a></td>
                     <td>{{c.Model}}</td>
                     <td>{{c.Rocznik}}</td>
                     <td>{{c.Cena}}</td>
@@ -18,10 +17,5 @@ strona {{page}}<br><br>
             {% endfor %}
         </form>
     </table>
-    <form id="page_form" method="POST" action="{% url 'przegladanie' %}">
-        {% csrf_token %}
-            {% for hidden in form %}
-                {{ hidden }}
-            {% endfor %}
     {% include "_paginator.html" with pagin=cars filters=filters %}
 {% endblock %}
