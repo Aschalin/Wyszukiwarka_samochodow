@@ -4,16 +4,19 @@
 Wyszukane Pojazdy:<br>
 strona {{page}}<br><br>
     <table>
-        {% for c in cars %}
-            <th></th>
-            <tr>
-                <td><a href="/szczegoly/?id={{c.id}}">{{c.Marka}}</a></td>
-                <td>{{c.Model}}</td>
-                <td>{{c.Rocznik}}</td>
-                <td>{{c.Cena}}</td>
-
-            </tr>
-        {% endfor %}
+        <form id="comparison" method="GET" action="{% url 'porownanie' %}">
+            <input type="submit" value="porównaj">
+            {% for c in cars %}
+                <th></th>
+                <tr>
+                    <td><input type="checkbox" name="cars" value="{{c.id}}"></td>
+                    <td><a href="/szczegoly/?id={{c.id}}">{{c.Marka}}</a></td>
+                    <td>{{c.Model}}</td>
+                    <td>{{c.Rocznik}}</td>
+                    <td>{{c.Cena}}</td>
+                </tr>
+            {% endfor %}
+        </form>
     </table>
     <form id="page_form" method="POST" action="{% url 'przegladanie' %}">
         {% csrf_token %}

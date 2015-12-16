@@ -57,3 +57,12 @@ def szczegoly(request):
     car = Samochody.objects.get(id=id)
     c['car'] = car
     return render(request, "szczegoly.html", c)
+
+def porownanie(request):
+    c={}
+    id=request.GET.getlist('cars')
+    cars = Samochody.objects.all()
+    cars = cars.filter(id__in=id)
+    c['cars'] = cars
+    c['ids'] = id
+    return render(request, "porownanie.html", c)

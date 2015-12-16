@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<H1>Porównanie</H1>
+<br><br>
+    <table>
+            <th></th>
+            <tr><td>Marka:   </td>
+            {%for c in cars%}
+                <td>{{c.Marka}}</td>
+            {%endfor%}
+            </tr>
+            <tr><td>Model:   </td>
+            {%for c in cars%}
+                <td>{{c.Model}}</td>
+            {%endfor%}
+            </tr>
+            <tr><td>Rocznik: </td>
+            {%for c in cars%}
+                <td>{{c.Rocznik}}</td>
+            {%endfor%}
+            </tr>
+            <tr><td>cena:    </td>
+            {%for c in cars%}
+                <td>{{c.Cena}}</td>
+            {%endfor%}
+            </tr>
+            </tr>
+    </table>
+{% endblock %}
