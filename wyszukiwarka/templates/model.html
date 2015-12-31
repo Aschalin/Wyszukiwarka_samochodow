@@ -13,17 +13,15 @@
     <br>
     Dostępne nadwozia:
     <table>
-        <th></th>
         <tr><td>Wersja:   </td>
         {% for n in nadwozia %}
-            <td>{{n.Rodzaj}}</td>
+            <td><a href="/szczegoly/{{s_id}}/{{car.id}}/{{n.id}}">{{n.Rodzaj}}</a></td>
         {% endfor %}
         </tr>
-        <tr><td>Dopłata:   </td>
+        <tr><td>cena:   </td>
         {% for n in nadwozia %}
-            <td>{{n.Oplata}}</td>
+            <td>{{car.Cena|add:n.Oplata}}</td>
         {% endfor %}
-        </tr>
         </tr>
     </table>
     <br>

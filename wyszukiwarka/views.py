@@ -68,16 +68,48 @@ def przegladanie(request, s_id=0):
     c['s_id']=s_id
     return render(request, "przegladanie.html", c)
 
-def szczegoly(request, s_id):
+def model(request, s_id, c_id):
     c={}
-    id=request.GET.get('id')
-    car = Samochody.objects.get(id=id)
+    car = Samochody.objects.get(id=c_id)
     nadwozia = Nadwozia.objects.all()
     nadwozia = nadwozia.filter(Samochod = car)
     c['car'] = car
     c['s_id'] = s_id
     c['nadwozia'] = nadwozia
-    return render(request, "szczegoly.html", c)
+    return render(request, "model.html", c)
+
+def nadwozie(request, s_id, c_id, n_id):
+    c={}
+    car = Samochody.objects.get(id=c_id)
+    nadwozie = Nadwozia.objects.get(id=n_id)
+    silniki = Silniki.objects.all()
+    silniki = silniki.filter(parametry__Nadwozie = nadwozie)
+    parametry = Silnik_Nadwozie.objects.all()
+    parametry = parametry.filter(Nadwozie = nadwozie)
+    benzynowe = silniki.filter(Paliwo = 'B')
+    diesla = silniki.filter(Paliwo = 'D')
+    c['car'] = car
+    c['s_id'] = s_id
+    c['nadwozie'] = nadwozie
+    c['benzynowe'] = benzynowe
+    c['diesla'] = diesla
+    c['parametry'] = parametry
+    return render(request, "nadwozie.html", c)
+
+def silnik(request, s_id, c_id, n_id, e_id):
+    c={}
+    car = Samochody.objects.get(id = c_id)
+    nadwozie = Nadwozia.objects.get(id = n_id)
+    silnik = Silniki.objects.get(id = e_id)
+    parametry = Silnik_Nadwozie.objects.all()
+    parametry = parametry.filter(Nadwozie = nadwozie)
+    parametry = parametry.filter(Silnik = silnik)
+    c['car'] = car
+    c['s_id'] = s_id
+    c['nadwozie'] = nadwozie
+    c['silnik'] = silnik
+    c['parametry'] = parametry[0]
+    return render(request, "silnik.html", c)
 
 def porownanie(request, s_id):
     c={}

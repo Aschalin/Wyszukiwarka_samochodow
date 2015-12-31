@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 
@@ -16,12 +17,44 @@ class Samochody(models.Model):
 
 class Nadwozia(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
-    Samochod=models.ForeignKey(Samochody, db_column='idSamochod')
-    Rodzaj=models.CharField(default='', max_length=30)
-    Oplata=models.IntegerField(default='0')
+    Samochod = models.ForeignKey(Samochody, db_column='idSamochod')
+    Rodzaj = models.CharField(default='', max_length=30)
+    Oplata = models.IntegerField(default='0')
 
     def __unicode__(self):
-        return self.Model
+        return self.Rodzaj
+
+
+class Silniki(models.Model):
+    Benzyna = 'B'
+    Diesel = 'D'
+    Gaz = 'G'
+    PaliwoChoices = (
+        (Benzyna, 'Benzyna'),
+        (Diesel, 'Diesel'),
+        (Gaz, 'Gaz'),
+    )
+    id = models.AutoField(primary_key=True, editable=False)
+    Rodzaj = models.CharField(default='', max_length=10)
+    Paliwo = models.CharField(choices=PaliwoChoices,default=Benzyna, max_length=1)
+    Pojemnosc = models.FloatField(default=1.0)
+    KM = models.FloatField(default='100')
+
+
+    def __unicode__(self):
+        return self.Rodzaj
+
+
+class Silnik_Nadwozie(models.Model):
+    Nadwozie = models.ForeignKey(Nadwozia, db_column='idNadwozie')
+    Silnik = models.ForeignKey(Silniki, db_column='idSilnik', related_name = 'parametry')
+    Zuzycie_Paliwa = models.FloatField(default='')
+    Przyspieszenie = models.FloatField(default='', db_column='0-100 km/h')
+    VMax = models.IntegerField(default='0')
+    Oplata = models.IntegerField(default='0')
+
+    def __unicode__(self):
+        return str(self.Silnik) or u''
 
 
 class Wyszukiwanie(models.Model):
