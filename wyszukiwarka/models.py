@@ -3,10 +3,18 @@ from django.db import models
 
 # Create your models here.
 
+class Marki(models.Model):
+    id = models.AutoField(primary_key=True, editable=False)
+    Marka = models.CharField(default='', max_length=30)
+    Kraj = models.CharField(default='', max_length=30)
+    WWW = models.URLField()
+
+    def __unicode__(self):
+        return self.Marka
 
 class Samochody(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
-    Marka = models.CharField(default='', max_length=30)
+    Marka = models.ForeignKey(Marki,db_column='idMarka')
     Model = models.CharField(default='', max_length=30)
     Rocznik = models.IntegerField(default=2015)
     Cena = models.IntegerField(default='')
@@ -38,7 +46,7 @@ class Silniki(models.Model):
     Rodzaj = models.CharField(default='', max_length=10)
     Paliwo = models.CharField(choices=PaliwoChoices,default=Benzyna, max_length=1)
     Pojemnosc = models.FloatField(default=1.0)
-    KM = models.FloatField(default='100')
+    KM = models.IntegerField(default='100')
 
 
     def __unicode__(self):
