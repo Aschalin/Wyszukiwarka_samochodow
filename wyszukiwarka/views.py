@@ -7,8 +7,8 @@ from django.http import HttpResponse
 
 # Create your views here.
 from wyszukiwarka.forms import *
-
-
+from base64 import b64encode
+from django.core.exceptions import ObjectDoesNotExist
 def index(request):
     return render(request, "base.html", {})
 
@@ -23,35 +23,32 @@ def wyszukiwanie(request):
     else:
         form=SearchForm()
     c['form']=form
+    c['goto']='wyszukiwanie'
     return render(request, "wyszukiwanie.html", c)
 
 
 def przegladanie(request, s_id=0):
     c={}
     baseCars = Samochody.objects.all()
-
-    #marka = request.POST.get('Marka')
-    #model = request.POST.get('Model')
-    #cena_od = request.POST.get('cena_od')
-    #cena_do = request.POST.get('cena_do')
-    #rocznik_od = request.POST.get('rocznik_od')
-    #rocznik_do = request.POST.get('rocznik_do')
-    try:
-        szukane = Wyszukiwanie.objects.get(id = s_id)
-        if szukane.Marka:
-            baseCars = baseCars.filter(Marka = szukane.Marka)
-        if szukane.Model:
-            baseCars = baseCars.filter(Model = szukane.Model)
-        if szukane.Cena_od:
-            baseCars = baseCars.filter(Cena__gte = szukane.Cena_od)
-        if szukane.Cena_do:
-            baseCars = baseCars.filter(Cena__lte = szukane.Cena_do)
-        if szukane.Rocznik_od:
-            baseCars = baseCars.filter(Rocznik__gte = szukane.Rocznik_od)
-        if szukane.Rocznik_do:
-            baseCars = baseCars.filter(Rocznik__lte = szukane.Rocznik_do)
-    except:
-        s_id=0
+    if s_id != '0':
+        try:
+            szukane = Wyszukiwanie.objects.get(id=s_id)
+            if szukane.Marka:
+                marki = Marki.objects.get(Marka=szukane.Marka)
+                baseCars = baseCars.filter(Marka=marki.id)
+            if szukane.Model:
+                baseCars = baseCars.filter(Model=szukane.Model)
+            if szukane.Cena_od:
+                baseCars = baseCars.filter(Cena__gte=szukane.Cena_od)
+            if szukane.Cena_do:
+                baseCars = baseCars.filter(Cena__lte=szukane.Cena_do)
+            if szukane.Rocznik_od:
+                baseCars = baseCars.filter(Rocznik__gte=szukane.Rocznik_od)
+            if szukane.Rocznik_do:
+                baseCars = baseCars.filter(Rocznik__lte=szukane.Rocznik_do)
+        except ObjectDoesNotExist:
+            pass
+            return redirect("/przegladanie/0/")
 
     baseCars = baseCars.order_by('Marka')
     page = request.GET.get('page')
@@ -60,8 +57,6 @@ def przegladanie(request, s_id=0):
     paginator = Paginator(baseCars, 10)
     try:
         cars = paginator.page(page)
-    except PageNotAnInteger:
-        cars = paginator.page(1)
     except EmptyPage:
         cars = paginator.page(paginator.num_pages)
     c['cars']=cars
@@ -84,10 +79,15 @@ def nadwozie(request, s_id, c_id, n_id):
     nadwozie = Nadwozia.objects.get(id=n_id)
     silniki = Silniki.objects.all()
     silniki = silniki.filter(parametry__Nadwozie = nadwozie)
-    parametry = Silnik_Nadwozie.objects.all()
+    parametry = Silniki_Nadwozia.objects.all()
     parametry = parametry.filter(Nadwozie = nadwozie)
     benzynowe = silniki.filter(Paliwo = 'B')
     diesla = silniki.filter(Paliwo = 'D')
+    files = Zdjecia.objects.all()
+    files = files.filter(Nadwozie = nadwozie)
+    for f in files:
+        f.Plik = b64encode(f.Plik)
+    c['files'] = files
     c['car'] = car
     c['s_id'] = s_id
     c['nadwozie'] = nadwozie
@@ -96,12 +96,13 @@ def nadwozie(request, s_id, c_id, n_id):
     c['parametry'] = parametry
     return render(request, "nadwozie.html", c)
 
+
 def silnik(request, s_id, c_id, n_id, e_id):
     c={}
     car = Samochody.objects.get(id = c_id)
     nadwozie = Nadwozia.objects.get(id = n_id)
     silnik = Silniki.objects.get(id = e_id)
-    parametry = Silnik_Nadwozie.objects.all()
+    parametry = Silniki_Nadwozia.objects.all()
     parametry = parametry.filter(Nadwozie = nadwozie)
     parametry = parametry.filter(Silnik = silnik)
     c['car'] = car

@@ -53,7 +53,7 @@ class Silniki(models.Model):
         return self.Rodzaj
 
 
-class Silnik_Nadwozie(models.Model):
+class Silniki_Nadwozia(models.Model):
     Nadwozie = models.ForeignKey(Nadwozia, db_column='idNadwozie')
     Silnik = models.ForeignKey(Silniki, db_column='idSilnik', related_name = 'parametry')
     Zuzycie_Paliwa = models.FloatField(default='')
@@ -76,3 +76,10 @@ class Wyszukiwanie(models.Model):
 
     def __unicode__(self):
         return self.Model
+
+class Zdjecia(models.Model):
+    Plik = models.BinaryField(editable=False)
+    Nadwozie = models.ForeignKey(Nadwozia, db_column='idNadwozie')
+
+    def __unicode__(self):
+        return self.Nadwozie
