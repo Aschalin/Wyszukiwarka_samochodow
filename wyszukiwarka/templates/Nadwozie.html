@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<H1>{{car.Marka}} {{car.Model}}</H1>
+<H1>{{car.Marka}} {{text}} {{car.Model}}</H1>
 <br><br>
     <table>
         <th></th>
@@ -10,6 +10,11 @@
         <tr><td>Rocznik: </td><td>{{car.Rocznik}}</td></tr>
         <tr><td>cena:    </td><td>{{car.Cena|add:nadwozie.Oplata}}</td></tr>
         <tr><td>nadwozie:    </td><td>{{nadwozie.Rodzaj}}</td><td><a href="/szczegoly/{{s_id}}/{{car.id}}">Zmien</a></td></tr>
+        <tr>
+            {%for f in files%}
+            <td><img src="data:image/gif;base64,{{f.Plik}}"/></td>
+            {%endfor%}
+        </tr>
     </table>
     <br>
     Dostępne silniki benzynowe:
