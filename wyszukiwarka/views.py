@@ -27,7 +27,6 @@ def wyszukiwanie(request):
     c['goto']='wyszukiwanie'
     return render(request, "wyszukiwanie.html", c)
 
-
 def przegladanie(request, s_id=0):
     c={}
     baseCars = Samochody.objects.all()
@@ -102,7 +101,6 @@ def nadwozie(request, s_id, c_id, n_id):
     c['parametry'] = parametry
     return render(request, "nadwozie.html", c)
 
-
 def silnik(request, s_id, c_id, n_id, e_id):
     c={}
     car = Samochody.objects.get(id = c_id)
@@ -122,8 +120,18 @@ def porownanie(request, s_id):
     c={}
     id=request.GET.getlist('cars')
     cars = Samochody.objects.all()
-    cars = cars.filter(id__in=id)
+    cars = list(cars.filter(id__in=id))
+    print cars
+    for s in cars:
+        s.nadwozia = Nadwozia.objects.all()
+        s.nadwozia = s.nadwozia.filter(Samochod=s.id)
+        print s.nadwozia
+        for n in s.nadwozia:
+            n.silniki = Silniki_Parametry.objects.all()
+            n.silniki = n.silniki.filter(Nadwozie=n)
+            print n.silniki
+
     c['cars'] = cars
-    c['ids'] = id
-    c['s_id']=s_id
+    c['s_id'] = s_id
+    print cars
     return render(request, "porownanie.html", c)

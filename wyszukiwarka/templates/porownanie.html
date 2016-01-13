@@ -1,18 +1,59 @@
 {% extends "base.html" %}
-
+{% block script %}
+<script>
+$(document).ready(function(){
+    {%for c in cars%}
+                $("#{{c.id}}").val("none");
+                {% for n in c.nadwozia %}
+                    $(".{{n.id}}").hide();
+                    {% for s in n.silniki %}
+                        $(".{{s.id}}").hide();
+                    {%endfor%}
+                {% endfor%}
+    {% endfor%}
+    {%for c in cars%}
+        $("#{{c.id}}").change(function(){
+            {% for n in c.nadwozia %}
+                if($("#{{c.id}}").val() == "{{n.id}}")
+                {
+                    $(".{{n.id}}").show();
+                }
+                else
+                {
+                    $(".{{n.id}}").hide();
+                }
+            {% endfor%}
+        });
+        {%for n in c.nadwozia%}
+            $(".{{n.id}}").change(function(){
+                {% for s in n.silniki %}
+                    if($(".{{n.id}}").val() == "{{s.id}}")
+                    {
+                        $(".{{s.id}}").show();
+                    }
+                    else
+                    {
+                        $(".{{s.id}}").hide();
+                    }
+                {% endfor%}
+            });
+        {% endfor%}
+    {% endfor%}
+});
+</script>
+{% endblock %}
 {% block content %}
 <H1>Porównanie</H1>
 <br><br>
     <table>
-            <th></th>
             <tr><td>Marka:   </td>
             {%for c in cars%}
-                <td>{{c.Marka}}</td>
+                <td><a href="/szczegoly/{{s_id}}/{{c.id}}"> {{c.Marka}}</a></td>
             {%endfor%}
             </tr>
             <tr><td>Model:   </td>
             {%for c in cars%}
-                <td>{{c.Model}}</td>
+                <td><a href="/szczegoly/{{s_id}}/{{c.id}}">{{c.Model}}</a></td>
             {%endfor%}
             </tr>
             <tr><td>Rocznik: </td>
@@ -25,7 +66,77 @@
                 <td>{{c.Cena}}</td>
             {%endfor%}
             </tr>
+            <tr>
+                <td>Nadwozia:</td>
+                {%for c in cars%}
+                    <td>
+                        <select id="{{c.id}}">
+                             <option value="none"> </option>
+                            {% for n in c.nadwozia %}
+                                <option value="{{n.id}}">{{n.Rodzaj}}</option>
+                            {% endfor%}
+                        </select>
+                    </td>
+                {%endfor%}
             </tr>
+            <tr>
+                <td>Silniki:</td>
+                {%for c in cars%}
+                    <td>
+                        {% for n in c.nadwozia %}
+                            <select class="{{n.id}}">
+                                <option value="none"> </option>
+                                {% for s in n.silniki %}
+                                    <option value="{{s.id}}">{{s.Silnik}}</option>
+                                {% endfor%}
+                            </select>
+                        {% endfor%}
+                    </td>
+                {%endfor%}
+            </tr>
+            <tr>
+                <td>Zurzycie paliwa:</td>
+                {%for c in cars%}
+                <td>
+                    {% for n in c.nadwozia %}
+                        <div class="{{n.id}}">
+                        {% for s in n.silniki %}
+                            <div class="{{s.id}}">{{s.Spalanie}}</div>
+                        {% endfor%}
+                        </div>
+                    {% endfor%}
+                </td>
+                {% endfor%}
+            </tr>
+            <tr>
+                <td>Przyspieszenie 0-100km/h:</td>
+                {%for c in cars%}
+                <td>
+                    {% for n in c.nadwozia %}
+                        <div class="{{n.id}}">
+                        {% for s in n.silniki %}
+                            <div class="{{s.id}}">{{s.Przyspieszenie}}</div>
+                        {% endfor%}
+                        </div>
+                    {% endfor%}
+                </td>
+                {% endfor%}
+            </tr>
+            <tr>
+                <td>Prędkość maksymalna:</td>
+                {%for c in cars%}
+                <td>
+                    {% for n in c.nadwozia %}
+                        <div class="{{n.id}}">
+                        {% for s in n.silniki %}
+                            <div class="{{s.id}}">{{s.VMax}}</div>
+                        {% endfor%}
+                        </div>
+                    {% endfor%}
+                </td>
+                {% endfor%}
+            </tr>
+
     </table>
 <a href="/przegladanie/{{s_id}}">wróć do wyników wyszukiwania</a>
 {% endblock %}

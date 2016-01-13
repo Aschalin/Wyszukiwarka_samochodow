@@ -8,10 +8,11 @@
         <tr><td>Marka:   </td><td>{{car.Marka}}</td></tr>
         <tr><td>Model:   </td><td>{{car.Model}}</td></tr>
         <tr><td>Rocznik: </td><td>{{car.Rocznik}}</td></tr>
+
         <tr><td>cena:    </td><td>{{car.Cena|add:nadwozie.Oplata|add:parametry.Oplata}}</td></tr>
         <tr><td>nadwozie:    </td><td>{{nadwozie.Rodzaj}}</td><td><a href="/szczegoly/{{s_id}}/{{car.id}}">Zmien</a></td></tr>
         <tr><td>Silnik:   </td><td>{{silnik.Pojemnosc}} {{silnik.Rodzaj}} {{silnik.KM}}</td></td><td><a href="/szczegoly/{{s_id}}/{{car.id}}/{{nadwozie.id}}">Zmien</a></td></tr>
-        <tr><td></td><td>Zużycie paliwa: </td><td>{{parametry.Zuzycie_Paliwa}}</td></tr>
+        <tr><td></td><td>Zużycie paliwa: </td><td>{{parametry.Spalanie}}</td></tr>
         <tr><td></td><td>Przyspieszenie 0-100km: </td><td>{{parametry.Przyspieszenie}}</td></tr>
         <tr><td></td><td>Prędkość maksymalna: </td><td>{{parametry.VMax}}</td></tr>
     </table>

@@ -2,6 +2,8 @@
 <html {% block html_extra %}{% endblock %}>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        {% block script %}
+        {% endblock %}
         <meta charset="UTF-8" />
         <title>{% block title %}Wyszukiwarka{% endblock %}</title>
     </head>

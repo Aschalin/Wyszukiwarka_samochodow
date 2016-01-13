@@ -756,7 +756,7 @@ def zdjecia():
 
 def views():
     cur.execute("""CREATE OR REPLACE VIEW wyszukiwarka_porownania AS
-                    SELECT concat(s.id, ' ', n.id, ' ', e.id) as id,
+                    SELECT concat(s.id, '/', n.id, '/', e.id) as id,
                     s.idMarka AS idMarka,
                     s.Model AS Model,
                     s.Rocznik AS Rocznik,
@@ -770,6 +770,19 @@ def views():
                     FROM
                     wyszukiwarka_silniki_nadwozia en join wyszukiwarka_silniki e on e.id=en.idSilnik join wyszukiwarka_nadwozia n on en.idNadwozie=n.id join wyszukiwarka_samochody s on s.id=n.idSamochod
                     """)
+
+    cur.execute("""CREATE OR REPLACE VIEW wyszukiwarka_silniki_parametry AS
+                SELECT en.id as id,
+                concat(e.Pojemnosc, ' ', e.Rodzaj, ' ', e.KM) AS Silnik,
+                e.Paliwo AS Paliwo,
+                en.Spalanie AS Spalanie,
+                en.Przyspieszenie AS Przyspieszenie,
+                en.VMax AS VMax,
+                en.Oplata AS Cena,
+                en.idNadwozie AS idNadwozie
+                FROM
+                wyszukiwarka_silniki_nadwozia en join wyszukiwarka_silniki e on e.id=en.idSilnik
+                """)
 
 def dodatki():
     cur.execute("""CREATE
@@ -791,7 +804,7 @@ def dodatki():
                     PROCEDURE `defaultVersion`(IN `s_id` INT) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
                     SELECT * FROM wyszukiwarka_porownania
                     WHERE id =(
-                        SELECT CONCAT ( n.idSamochod, ' ', n.id, ' ', en.idSilnik ) FROM wyszukiwarka_silniki_nadwozia en
+                        SELECT CONCAT ( n.idSamochod, '/', n.id, '/', en.idSilnik ) FROM wyszukiwarka_silniki_nadwozia en
                         JOIN wyszukiwarka_nadwozia n ON en.idNadwozie = n.id
                         WHERE n.idSamochod = s_id AND(n.Oplata + en.Oplata) = 0
                     )

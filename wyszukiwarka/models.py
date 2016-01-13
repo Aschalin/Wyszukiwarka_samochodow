@@ -131,6 +131,24 @@ class Porownania(models.Model):
     class Meta:
         managed = False
 
+class Silniki_Parametry(models.Model):
+    Benzyna = 'B'
+    Diesel = 'D'
+    Gaz = 'G'
+    PaliwoChoices = (
+        (Benzyna, 'Benzyna'),
+        (Diesel, 'Diesel'),
+        (Gaz, 'Gaz'),
+    )
+    id = models.IntegerField(primary_key=True, editable=False)
+    Silnik = models.CharField(default='', max_length=45)
+    Paliwo = models.CharField(choices=PaliwoChoices, default=Benzyna, max_length=1)
+    Spalanie = models.FloatField(default='')
+    Przyspieszenie = models.FloatField(default='')
+    VMax = models.IntegerField(default='0')
+    Cena = models.BigIntegerField(default='')
+    Nadwozie = models.ForeignKey(Nadwozia, db_column='idNadwozie')
+
 class maxPrice(models.Model):
     id = models.CharField(primary_key=True, max_length=35, editable=False)
     Cena = models.BigIntegerField(default='')
