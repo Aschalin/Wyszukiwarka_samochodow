@@ -8,7 +8,7 @@
         <tr><td>Marka:   </td><td>{{car.Marka}}</td></tr>
         <tr><td>Model:   </td><td>{{car.Model}}</td></tr>
         <tr><td>Rocznik: </td><td>{{car.Rocznik}}</td></tr>
-        <tr><td>cena:    </td><td>{{car.Cena}}</td></tr>
+        <tr><td>cena:    </td><td>{{car.Cena}} - {{cenaMax}}</td></tr>
     </table>
     <br>
     Dostępne nadwozia:
@@ -20,7 +20,13 @@
         </tr>
         <tr><td>cena:   </td>
         {% for n in nadwozia %}
-            <td>{{car.Cena|add:n.Oplata}}</td>
+            {% for c in nadwoziaMax %}
+            {%if c.id == n.id%}
+
+            <td>{{car.Cena|add:n.Oplata}}{%if c.Cena != 0%} - {{car.Cena|add:n.Oplata|add:c.Cena}}{% endif %}</td>
+            {% endif %}
+
+            {% endfor %}
         {% endfor %}
         </tr>
     </table>

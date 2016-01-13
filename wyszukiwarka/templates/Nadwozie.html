@@ -2,19 +2,21 @@
 
 {% block content %}
 <H1>{{car.Marka}} {{text}} {{car.Model}}</H1>
+<table>
+            <tr>
+            {%for f in files%}
+            <td><img src="data:image/gif;base64,{{f.Plik}}"/></td>
+            {%endfor%}
+            </tr>
+</table>
 <br><br>
     <table>
         <th></th>
         <tr><td>Marka:   </td><td>{{car.Marka}}</td></tr>
         <tr><td>Model:   </td><td>{{car.Model}}</td></tr>
         <tr><td>Rocznik: </td><td>{{car.Rocznik}}</td></tr>
-        <tr><td>cena:    </td><td>{{car.Cena|add:nadwozie.Oplata}}</td></tr>
+        <tr><td>cena:    </td><td>{{car.Cena|add:nadwozie.Oplata}} - {{car.Cena|add:nadwozie.Oplata|add:cenaMax}}</td></tr>
         <tr><td>nadwozie:    </td><td>{{nadwozie.Rodzaj}}</td><td><a href="/szczegoly/{{s_id}}/{{car.id}}">Zmien</a></td></tr>
-        <tr>
-            {%for f in files%}
-            <td><img src="data:image/gif;base64,{{f.Plik}}"/></td>
-            {%endfor%}
-        </tr>
     </table>
     <br>
     Dostępne silniki benzynowe:

@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Max
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
@@ -70,7 +71,10 @@ def model(request, s_id, c_id):
     nadwozia = nadwozia.filter(Samochod = car)
     c['car'] = car
     c['s_id'] = s_id
+    c['cenaMax'] = car.Cena + (maxPrice.objects.raw("call samochodMaxPrice(" + c_id + ");"))[0].Cena
     c['nadwozia'] = nadwozia
+    c['nadwoziaMax'] = list(maxPrice.objects.raw("call nadwozieMaxPrice(" + c_id + ");"))
+    print(c['nadwoziaMax'])
     return render(request, "model.html", c)
 
 def nadwozie(request, s_id, c_id, n_id):
@@ -87,6 +91,8 @@ def nadwozie(request, s_id, c_id, n_id):
     files = files.filter(Nadwozie = nadwozie)
     for f in files:
         f.Plik = b64encode(f.Plik)
+    cenaMax = parametry.aggregate(Max('Oplata'))['Oplata__max']
+    c['cenaMax'] = cenaMax
     c['files'] = files
     c['car'] = car
     c['s_id'] = s_id

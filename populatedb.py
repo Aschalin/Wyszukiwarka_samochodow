@@ -261,8 +261,8 @@ def silniki():
 def silnikiNadwozia():
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_silniki_nadwozia` (
                     `id` int(11) NOT NULL,
-                    `Zuzycie_Paliwa` double NOT NULL,
-                    `0-100 km/h` double NOT NULL,
+                    `Spalanie` double NOT NULL,
+                    `Przyspieszenie` double NOT NULL,
                     `VMax` int(11) NOT NULL,
                     `Oplata` int(11) NOT NULL,
                     `idNadwozie` int(11) NOT NULL,
@@ -272,7 +272,7 @@ def silnikiNadwozia():
                     FOREIGN KEY (idSilnik) REFERENCES wyszukiwarka_silniki(id))
                     ENGINE=MyISAM DEFAULT CHARSET=latin1;
                     """)
-    cur.execute("""INSERT INTO `wyszukiwarka_silniki_nadwozia` (`id`, `Zuzycie_Paliwa`, `0-100 km/h`, `VMax`, `Oplata`, `idNadwozie`, `idSilnik`) VALUES
+    cur.execute("""INSERT INTO `wyszukiwarka_silniki_nadwozia` (`id`, `Spalanie`, `Przyspieszenie`, `VMax`, `Oplata`, `idNadwozie`, `idSilnik`) VALUES
                     (106, 7.3, 7.9, 240, 45700, 16, 29),
                     (105, 7.3, 8.7, 232, 38300, 16, 28),
                     (104, 5.8, 9.2, 222, 3300, 16, 26),
@@ -299,17 +299,17 @@ def silnikiNadwozia():
                     (84, 3.8, 12.1, 180, 12700, 9, 45),
                     (83, 5.9, 10.9, 190, 6000, 9, 33),
                     (82, 6, 12.3, 180, 3000, 9, 32),
-                    (81, 6, 15, 170, 0, 11, 9),
+                    (81, 6, 15, 170, 0, 9, 31),
                     (80, 5.9, 8.8, 222, 19650, 9, 27),
                     (79, 5.6, 9.1, 210, 11450, 9, 25),
                     (78, 4.8, 11.1, 195, 8500, 9, 23),
                     (77, 4.8, 12.6, 187, 5000, 9, 22),
                     (76, 4.1, 8.9, 210, 20750, 8, 49),
                     (75, 4.2, 10.9, 193, 14000, 8, 48),
-                    (74, 4.2, 12.6, 180, 11000, 8, 45),
+                    (74, 4.2, 12.5, 180, 11000, 8, 47),
                     (73, 3.8, 10.5, 193, 16450, 8, 46),
                     (72, 3.4, 12.1, 187, 13300, 8, 52),
-                    (71, 3.8, 12.1, 180, 12700, 8, 45),
+                    (71, 3.8, 12.0, 180, 12700, 8, 45),
                     (70, 5.9, 10.9, 190, 6000, 8, 33),
                     (69, 6, 12.3, 180, 3000, 8, 32),
                     (68, 6, 15, 170, 0, 8, 31),
@@ -319,7 +319,7 @@ def silnikiNadwozia():
                     (64, 4.8, 12.6, 187, 5000, 8, 22),
                     (63, 4.1, 8.9, 210, 20750, 10, 49),
                     (62, 4.2, 10.9, 193, 14000, 10, 48),
-                    (61, 4.2, 12.6, 180, 11000, 10, 45),
+                    (61, 4.2, 12.6, 180, 11000, 10, 47),
                     (60, 3.8, 10.5, 193, 16450, 10, 46),
                     (59, 3.4, 12.1, 187, 13300, 10, 52),
                     (58, 3.8, 12.1, 180, 12700, 10, 45),
@@ -490,7 +490,6 @@ def silnikiNadwozia():
                     (215, 10.5, 4.5, 250, 0, 42, 99),
                     (216, 8.5, 5.4, 250, 0, 43, 19),
                     (217, 8.1, 4.9, 250, 0, 44, 19),
-                    (218, 0, 0, 0, 0, 0, 0),
                     (219, 5.8, 9.3, 220, 0, 46, 7),
                     (220, 5.8, 8.2, 220, 9500, 46, 8),
                     (221, 5.9, 7, 250, 29000, 46, 15),
@@ -562,53 +561,8 @@ def silnikiNadwozia():
                     (287, 7.1, 4.9, 250, 0, 66, 107),
                     (288, 6, 6.2, 250, 0, 67, 21),
                     (289, 4.3, 7.3, 237, 800, 67, 71),
-                    (290, 0, 0, 0, 0, 68, 107);
+                    (218, 0, 0, 0, 0, 68, 107);
                     """)
-
-def zdjecia():
-    cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_zdjecia` (
-                `id` int(11) NOT NULL,
-                `plik` longBlob NOT NULL,
-                `idNadwozie` int(11) NOT NULL,
-                PRIMARY KEY (id),
-                FOREIGN KEY (idNadwozie) REFERENCES wyszukiwarka_nadwozia(id))
-                ENGINE=MyISAM  DEFAULT CHARSET=latin1;
-                """)
-
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (1, 14, x'""" + readFile('photos/ka1.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (2, 14, x'""" + readFile('photos/ka2.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (3, 14, x'""" + readFile('photos/ka3.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (4, 4, x'""" + readFile('photos/fiesta3d1.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (5, 4, x'""" + readFile('photos/fiesta3d2.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (6, 4, x'""" + readFile('photos/fiesta3d3.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (7, 4, x'""" + readFile('photos/fiesta3d4.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (8, 5, x'""" + readFile('photos/fiesta5d1.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (9, 5, x'""" + readFile('photos/fiesta5d2.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (10, 5, x'""" + readFile('photos/fiesta5d3.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (11, 5, x'""" + readFile('photos/fiesta5d4.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (12, 6, x'""" + readFile('photos/fiestast1.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (13, 6, x'""" + readFile('photos/fiestast2.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (14, 6, x'""" + readFile('photos/fiestast3.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (15, 6, x'""" + readFile('photos/fiestast4.jpg') + """');""")
-    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
-                    (16, 7, x'""" + readFile('photos/fiestavan1.jpg') + """');""")
-
-
 
 def wyszukiwanie():
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_wyszukiwanie` (
@@ -623,10 +577,232 @@ def wyszukiwanie():
                     ENGINE=MyISAM DEFAULT CHARSET=latin1;
                     """)
 
+def zdjecia():
+    cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_zdjecia` (
+                `id` int(11) NOT NULL,
+                `plik` longBlob NOT NULL,
+                `idNadwozie` int(11) NOT NULL,
+                PRIMARY KEY (id),
+                FOREIGN KEY (idNadwozie) REFERENCES wyszukiwarka_nadwozia(id))
+                ENGINE=MyISAM  DEFAULT CHARSET=latin1;""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (69, 14, x'""" + readFile('photos/ka1.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (70, 14, x'""" + readFile('photos/ka2.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (71, 14, x'""" + readFile('photos/ka3.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (72, 4, x'""" + readFile('photos/fiesta3d1.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (73, 4, x'""" + readFile('photos/fiesta3d2.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (74, 4, x'""" + readFile('photos/fiesta3d3.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (75, 4, x'""" + readFile('photos/fiesta3d4.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (76, 5, x'""" + readFile('photos/fiesta5d1.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (77, 5, x'""" + readFile('photos/fiesta5d2.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (78, 5, x'""" + readFile('photos/fiesta5d3.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (79, 5, x'""" + readFile('photos/fiesta5d4.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (80, 6, x'""" + readFile('photos/fiestast1.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (81, 6, x'""" + readFile('photos/fiestast2.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (82, 6, x'""" + readFile('photos/fiestast3.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (83, 6, x'""" + readFile('photos/fiestast4.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (84, 7, x'""" + readFile('photos/fiestavan1.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (1,1, x'""" + readFile('photos/1.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (2,2, x'""" + readFile('photos/2.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (3,3, x'""" + readFile('photos/3.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (4,4, x'""" + readFile('photos/4.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (5,5, x'""" + readFile('photos/5.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (6,6, x'""" + readFile('photos/6.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (7,7, x'""" + readFile('photos/7.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (8,8, x'""" + readFile('photos/8.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (9,9, x'""" + readFile('photos/9.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (10,10, x'""" + readFile('photos/10.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (11,11, x'""" + readFile('photos/11.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (12,12, x'""" + readFile('photos/12.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (13,13, x'""" + readFile('photos/13.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (14,14, x'""" + readFile('photos/14.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (15,15, x'""" + readFile('photos/15.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (16,16, x'""" + readFile('photos/16.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (17,17, x'""" + readFile('photos/17.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (18,18, x'""" + readFile('photos/18.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (19,19, x'""" + readFile('photos/19.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (20,20, x'""" + readFile('photos/20.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (21,21, x'""" + readFile('photos/21.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (22,22, x'""" + readFile('photos/22.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (23,23, x'""" + readFile('photos/23.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (24,24, x'""" + readFile('photos/24.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (25,25, x'""" + readFile('photos/25.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (26,26, x'""" + readFile('photos/26.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (27,27, x'""" + readFile('photos/27.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (28,28, x'""" + readFile('photos/28.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (29,29, x'""" + readFile('photos/29.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (30,30, x'""" + readFile('photos/30.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (31,31, x'""" + readFile('photos/31.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (32,32, x'""" + readFile('photos/32.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (33,33, x'""" + readFile('photos/33.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (34,34, x'""" + readFile('photos/34.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (35,35, x'""" + readFile('photos/35.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (36,36, x'""" + readFile('photos/36.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (37,37, x'""" + readFile('photos/37.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (38,38, x'""" + readFile('photos/38.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (39,39, x'""" + readFile('photos/39.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (40,40, x'""" + readFile('photos/40.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (41,41, x'""" + readFile('photos/41.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (42,42, x'""" + readFile('photos/42.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (43,43, x'""" + readFile('photos/43.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (44,44, x'""" + readFile('photos/44.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (45,45, x'""" + readFile('photos/45.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (46,46, x'""" + readFile('photos/46.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (47,47, x'""" + readFile('photos/47.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (48,48, x'""" + readFile('photos/48.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (49,49, x'""" + readFile('photos/49.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (50,50, x'""" + readFile('photos/50.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (51,51, x'""" + readFile('photos/51.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (52,52, x'""" + readFile('photos/52.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (53,53, x'""" + readFile('photos/53.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (54,54, x'""" + readFile('photos/54.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (55,55, x'""" + readFile('photos/55.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (56,56, x'""" + readFile('photos/56.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (57,57, x'""" + readFile('photos/57.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (58,58, x'""" + readFile('photos/58.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (59,59, x'""" + readFile('photos/59.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (60,60, x'""" + readFile('photos/60.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (61,61, x'""" + readFile('photos/61.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (62,62, x'""" + readFile('photos/62.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (63,63, x'""" + readFile('photos/63.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (64,64, x'""" + readFile('photos/64.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (65,65, x'""" + readFile('photos/65.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (66,66, x'""" + readFile('photos/66.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (67,67, x'""" + readFile('photos/67.jpg') + """');""")
+    cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
+                    (68,68, x'""" + readFile('photos/68.jpg') + """');""")
+
+def views():
+    cur.execute("""CREATE OR REPLACE VIEW wyszukiwarka_porownania AS
+                    SELECT concat(s.id, ' ', n.id, ' ', e.id) as id,
+                    s.idMarka AS idMarka,
+                    s.Model AS Model,
+                    s.Rocznik AS Rocznik,
+                    n.Rodzaj AS Nadwozie,
+                    concat(e.Pojemnosc, ' ', e.Rodzaj, ' ', e.KM) AS Silnik,
+                    e.Paliwo AS Paliwo,
+                    en.Spalanie AS Spalanie,
+                    en.Przyspieszenie AS Przyspieszenie,
+                    en.VMax AS VMax,
+                    (en.Oplata+n.Oplata+s.Cena) AS Cena
+                    FROM
+                    wyszukiwarka_silniki_nadwozia en join wyszukiwarka_silniki e on e.id=en.idSilnik join wyszukiwarka_nadwozia n on en.idNadwozie=n.id join wyszukiwarka_samochody s on s.id=n.idSamochod
+                    """)
+
+def dodatki():
+    cur.execute("""CREATE
+                    PROCEDURE `samochodMaxPrice`(IN `s_id` INT) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
+                    SELECT en.id, MAX(n.Oplata + en.Oplata) AS Cena
+                    FROM wyszukiwarka_silniki_nadwozia en
+                    JOIN wyszukiwarka_nadwozia n ON en.idNadwozie = n.id
+                    WHERE n.idSamochod = s_id
+                    """)
+    cur.execute("""CREATE
+                    PROCEDURE `nadwozieMaxPrice`(IN `s_id` INT) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
+                    SELECT n.id as id, max(en.Oplata) as Cena
+                    FROM wyszukiwarka_silniki_nadwozia en
+                    JOIN wyszukiwarka_nadwozia n ON en.idNadwozie = n.id
+                    WHERE n.idSamochod = s_id
+                    GROUP BY n.id
+                    """)
+    cur.execute("""CREATE
+                    PROCEDURE `defaultVersion`(IN `s_id` INT) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
+                    SELECT * FROM wyszukiwarka_porownania
+                    WHERE id =(
+                        SELECT CONCAT ( n.idSamochod, ' ', n.id, ' ', en.idSilnik ) FROM wyszukiwarka_silniki_nadwozia en
+                        JOIN wyszukiwarka_nadwozia n ON en.idNadwozie = n.id
+                        WHERE n.idSamochod = s_id AND(n.Oplata + en.Oplata) = 0
+                    )
+                    """)
+
+
 def readFile(path):
     with open(path, 'rb') as f:
         result = f.read()
     return "".join("{:02x}".format(ord(c)) for c in result)
+
 try:
     con = mdb.connect('127.0.0.1', 'root', '', 'wyszukiwarka');
 
@@ -642,24 +818,15 @@ try:
         nadwozia()
         silniki()
         silnikiNadwozia()
-        zdjecia()
         wyszukiwanie()
-
-
-
-
-
-
-
-
-
+        zdjecia()
+        dodatki()
+        views()
 
 except mdb.Error, e:
-
     print "Error %d: %s" % (e.args[0],e.args[1])
     sys.exit(1)
 
 finally:
-
     if con:
         con.close()
