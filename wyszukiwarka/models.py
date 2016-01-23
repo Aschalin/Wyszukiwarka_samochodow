@@ -14,6 +14,7 @@ class Marki(models.Model):
 
     class Meta:
         managed = False
+        verbose_name_plural = 'Marki'
 
 
 class Samochody(models.Model):
@@ -28,6 +29,7 @@ class Samochody(models.Model):
 
     class Meta:
         managed = False
+        verbose_name_plural = 'Modele'
 
 
 class Nadwozia(models.Model):
@@ -41,6 +43,7 @@ class Nadwozia(models.Model):
 
     class Meta:
         managed = False
+        verbose_name_plural = 'Nadwozia'
 
 
 class Silniki(models.Model):
@@ -59,10 +62,11 @@ class Silniki(models.Model):
     KM = models.IntegerField(default='100')
 
     def __unicode__(self):
-        return self.Rodzaj
+        return str(self.Pojemnosc) + ' ' + self.Rodzaj + ' ' + str(self.KM)
 
     class Meta:
         managed = False
+        verbose_name_plural = 'Silniki'
 
 
 class Silniki_Nadwozia(models.Model):
@@ -78,6 +82,7 @@ class Silniki_Nadwozia(models.Model):
 
     class Meta:
         managed = False
+        verbose_name_plural = 'Konfiguracje'
 
 
 class Wyszukiwanie(models.Model):
@@ -105,6 +110,7 @@ class Zdjecia(models.Model):
 
     class Meta:
         managed = False
+        verbose_name_plural = 'Zdjecia'
 
 
 class Porownania(models.Model):
@@ -151,6 +157,7 @@ class Silniki_Parametry(models.Model):
 
     class Meta:
         managed = False
+        verbose_name_plural = 'Parametry silnikow'
 
 class maxPrice(models.Model):
     id = models.CharField(primary_key=True, max_length=35, editable=False)

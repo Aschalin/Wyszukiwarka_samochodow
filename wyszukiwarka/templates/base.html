@@ -7,11 +7,20 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Wyszukiwarka{% endblock %}</title>
     </head>
-        <a href="{% url 'index' %}"> Strona Główna</a> |
-    	<a href="{% url 'wyszukiwanie' %}"> Wyszukaj</a> |
-    	<a href="{% url 'przegladanie' 0 %}"> Przeglądaj</a> |
-    	<hr/>
-    	</br></br>
+        <p align="left">
+            <a href="{% url 'index' %}"> Strona Główna</a> |
+            <a href="{% url 'wyszukiwanie' %}"> Wyszukaj</a> |
+            <a href="{% url 'przegladanie' 0 %}"> Przeglądaj</a>
+
+        <span style="float:right;">
+            {% if user.is_authenticated %}
+              użytkownik:  <b>{{user.username}}</b>    <a href="/logout/">wyloguj się</a>
+            {% else %}
+              <a href="/login/">zaloguj się</a>
+            {% endif %}
+        </span>
+        </p>
+        <hr>
     {% block content %}
     {% endblock %}
 </html>

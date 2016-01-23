@@ -2,6 +2,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Max
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth import logout
 
 from models import *
 from django.http import HttpResponse
@@ -24,7 +25,6 @@ def wyszukiwanie(request):
     else:
         form=SearchForm()
     c['form']=form
-    c['goto']='wyszukiwanie'
     return render(request, "wyszukiwanie.html", c)
 
 def przegladanie(request, s_id=0):
@@ -135,3 +135,60 @@ def porownanie(request, s_id):
     c['s_id'] = s_id
     print cars
     return render(request, "porownanie.html", c)
+
+def logout_page(request):
+    logout(request)
+    return redirect("/")
+
+def moderate(request):
+    c={}
+    done=False
+    succes=''
+    if request.method=='POST':
+        type=request.POST.get('submit')
+        if type == 'dodaj marke':
+            marka=addMarka(request.POST)
+            if marka.is_valid():
+                marka = marka.save(commit=False)
+                marka.save()
+                succes = "Dodano nowa Marke do bazy"
+                done=True
+        elif type == 'dodaj samochod':
+            samochod=addSamochod(request.POST)
+            if samochod.is_valid():
+                samochod = samochod.save(commit=False)
+                samochod.save()
+                succes="Dodano nowy Model do bazy"
+                done=True
+        elif type == 'dodaj nadwozie':
+            nadwozie=addNadwozie(request.POST)
+            if nadwozie.is_valid():
+                nadwozie = nadwozie.save(commit=False)
+                nadwozie.save()
+                succes="Dodano nowe Nadwozie do bazy"
+                done=True
+        elif type == 'dodaj silnik':
+            silnik=addSilnik(request.POST)
+            if silnik.is_valid():
+                silnik = silnik.save(commit=False)
+                silnik.save()
+                succes="Dodano nowy Silnik do bazy"
+                done=True
+        elif type == 'dodaj konfiguracje':
+            parametry=addParametry(request.POST)
+            if parametry.is_valid():
+                parametry = parametry.save(commit=False)
+                parametry.save()
+                succes="Dodano nowa konfiguracje do bazy"
+    marka = addMarka()
+    samochod = addSamochod()
+    nadwozie = addNadwozie()
+    silnik = addSilnik()
+    parametry = addParametry()
+    c['marka'] = marka
+    c['samochod'] = samochod
+    c['nadwozie'] = nadwozie
+    c['silnik'] = silnik
+    c['parametry'] = parametry
+    c['succes'] = succes
+    return render(request, "registration/moderate.html", c)
