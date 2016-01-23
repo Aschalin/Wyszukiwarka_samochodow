@@ -149,6 +149,12 @@ class Silniki_Parametry(models.Model):
     Cena = models.BigIntegerField(default='')
     Nadwozie = models.ForeignKey(Nadwozia, db_column='idNadwozie')
 
+    class Meta:
+        managed = False
+
 class maxPrice(models.Model):
     id = models.CharField(primary_key=True, max_length=35, editable=False)
     Cena = models.BigIntegerField(default='')
+
+    class Meta:
+        managed = False
