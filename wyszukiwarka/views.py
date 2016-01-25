@@ -147,48 +147,99 @@ def moderate(request):
     if request.method=='POST':
         type=request.POST.get('submit')
         if type == 'dodaj marke':
-            marka=addMarka(request.POST)
+            marka=markaForm(request.POST)
             if marka.is_valid():
                 marka = marka.save(commit=False)
                 marka.save()
                 succes = "Dodano nowa Marke do bazy"
                 done=True
         elif type == 'dodaj samochod':
-            samochod=addSamochod(request.POST)
+            samochod=samochodForm(request.POST)
             if samochod.is_valid():
                 samochod = samochod.save(commit=False)
                 samochod.save()
                 succes="Dodano nowy Model do bazy"
                 done=True
         elif type == 'dodaj nadwozie':
-            nadwozie=addNadwozie(request.POST)
+            nadwozie=nadwozieForm(request.POST)
             if nadwozie.is_valid():
                 nadwozie = nadwozie.save(commit=False)
                 nadwozie.save()
                 succes="Dodano nowe Nadwozie do bazy"
                 done=True
         elif type == 'dodaj silnik':
-            silnik=addSilnik(request.POST)
+            silnik=silnikForm(request.POST)
             if silnik.is_valid():
                 silnik = silnik.save(commit=False)
                 silnik.save()
                 succes="Dodano nowy Silnik do bazy"
                 done=True
         elif type == 'dodaj konfiguracje':
-            parametry=addParametry(request.POST)
+            parametry=parametryForm(request.POST)
             if parametry.is_valid():
                 parametry = parametry.save(commit=False)
                 parametry.save()
                 succes="Dodano nowa konfiguracje do bazy"
-    marka = addMarka()
-    samochod = addSamochod()
-    nadwozie = addNadwozie()
-    silnik = addSilnik()
-    parametry = addParametry()
-    c['marka'] = marka
-    c['samochod'] = samochod
-    c['nadwozie'] = nadwozie
-    c['silnik'] = silnik
-    c['parametry'] = parametry
+    c['marka'] = markaForm()
+    c['samochod'] = samochodForm()
+    c['nadwozie'] = nadwozieForm()
+    c['silnik'] = silnikForm()
+    c['parametry'] = parametryForm()
     c['succes'] = succes
     return render(request, "registration/moderate.html", c)
+
+def editSamochod(request, s_id, c_id):
+    c={}
+    samochod=Samochody.objects.get(id=c_id);
+    if request.method=='POST':
+        form=samochodForm(request.POST, instance=samochod)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.save()
+    else:
+        c['form'] = samochodForm(instance=samochod)
+    c['type'] = "samochodu"
+    return render(request, "registration/editDB.html", c)
+
+def editNadwozie(request, s_id, n_id):
+    c={}
+    nadwozie=Nadwozia.objects.get(id=n_id);
+    if request.method=='POST':
+        form=nadwozieForm(request.POST, instance=nadwozie)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.save()
+    else:
+        c['form'] = nadwozieForm(instance=nadwozie)
+    c['type'] = "nadwozia"
+    return render(request, "registration/editDB.html", c)
+
+def editSilnik(request, s_id, e_id):
+    c={}
+    silnik = Silniki.objects.get(id = e_id);
+    if request.method=='POST':
+        form=silnikForm(request.POST, instance=silnik)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.save()
+    else:
+        c['form'] = silnikForm(instance=silnik)
+    c['type'] = "silnika"
+    return render(request, "registration/editDB.html", c)
+
+def editParametry(request, s_id, n_id, e_id):
+    c={}
+    nadwozie = Nadwozia.objects.get(id = n_id)
+    silnik = Silniki.objects.get(id = e_id)
+    parametry = Silniki_Nadwozia.objects.all()
+    parametry = parametry.filter(Nadwozie = nadwozie)
+    parametry = parametry.filter(Silnik = silnik)
+    if request.method=='POST':
+        form=parametryForm(request.POST, instance=parametry[0])
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.save()
+    else:
+        c['form'] = parametryForm(instance=parametry[0])
+    c['type'] = "silnika"
+    return render(request, "registration/editDB.html", c)

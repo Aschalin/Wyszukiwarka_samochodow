@@ -1,100 +1,103 @@
 {% extends "base.html"%}
 {% block script %}
-<script>
-    $(document).ready(function(){
-        $(".marka").hide();
-        $(".samochod").hide();
-        $(".nadwozie").hide();
-        $(".silnik").hide();
-        $(".parametry").hide();
-        $("#type").change(function(){
-            if($("#type").val() == "marka")
-            {
-                $(".marka").show();
-            }
-            else
-            {
-                $(".marka").hide();
-            }
-            if($("#type").val() == "samochod")
-            {
-                $(".samochod").show();
-            }
-            else
-            {
-                $(".samochod").hide();
-            }
-            if($("#type").val() == "nadwozie")
-            {
-                $(".nadwozie").show();
-            }
-            else
-            {
-                $(".nadwozie").hide();
-            }
-            if($("#type").val() == "silnik")
-            {
-                $(".silnik").show();
-            }
-            else
-            {
-                $(".silnik").hide();
-            }
-            if($("#type").val() == "parametry")
-            {
-                $(".parametry").show();
-            }
-            else
-            {
-                $(".parametry").hide();
-            }
+    <script>
+        $(document).ready(function(){
+            $(".marka").hide();
+            $(".samochod").hide();
+            $(".nadwozie").hide();
+            $(".silnik").hide();
+            $(".parametry").hide();
+            $("#type").change(function(){
+                if($("#type").val() == "marka")
+                {
+                    $(".marka").show();
+                }
+                else
+                {
+                    $(".marka").hide();
+                }
+                if($("#type").val() == "samochod")
+                {
+                    $(".samochod").show();
+                }
+                else
+                {
+                    $(".samochod").hide();
+                }
+                if($("#type").val() == "nadwozie")
+                {
+                    $(".nadwozie").show();
+                }
+                else
+                {
+                    $(".nadwozie").hide();
+                }
+                if($("#type").val() == "silnik")
+                {
+                    $(".silnik").show();
+                }
+                else
+                {
+                    $(".silnik").hide();
+                }
+                if($("#type").val() == "parametry")
+                {
+                    $(".parametry").show();
+                }
+                else
+                {
+                    $(".parametry").hide();
+                }
+            });
         });
-    });
-</script>
+    </script>
 {% endblock %}
 {% block content %}
-<h2>Strona moderowania bazy</h2>
+    {% if user.is_authenticated %}
+        <h2>Strona moderowania bazy</h2>
 
-{{succes}}
-<br>
-Wybierz co chcesz dodac:
-    <select id="type">
-        <option value="none"> ------ </option>
-        <option value="marka">marke</option>
-        <option value="samochod">samochod</option>
-        <option value="nadwozie">nadwozie</option>
-        <option value="silnik">silnik</option>
-        <option value="parametry">konfiguracje</option>
-    </select>
-<br>
-    <form class="marka" method="POST" action="{% url 'moderate' %}">
-        {% csrf_token %}
-        {{ marka.as_p }}
-        <input type="submit" name="submit" value="dodaj marke" />
-    </form>
-    <form class="samochod" method="POST" action="{% url 'moderate' %}">
-        {% csrf_token %}
-        {{ samochod.as_p }}
-        <input type="submit" name="submit" value="dodaj samochod" />
-    </form>
-    <form class="nadwozie" method="POST" action="{% url 'moderate' %}">
-        {% csrf_token %}
-        {{ nadwozie.as_p }}
-        <input type="submit" name="submit" value="dodaj nadwozie" />
-    </form>
-    <form class="silnik" method="POST" action="{% url 'moderate' %}">
-        {% csrf_token %}
-        {{ silnik.as_p }}
-        <input type="submit" name="submit" value="dodaj silnik" />
-    </form>
-    <form class="parametry" method="POST" action="{% url 'moderate' %}">
-        {% csrf_token %}
-        {{ parametry.as_p }}
-        <input type="submit" name="submit" value="dodaj konfiguracje" />
-    </form>
+        {{succes}}
+        <br>
+        Wybierz co chcesz dodac:
+        <select id="type">
+            <option value="none"> ------ </option>
+            <option value="marka">marke</option>
+            <option value="samochod">samochod</option>
+            <option value="nadwozie">nadwozie</option>
+            <option value="silnik">silnik</option>
+            <option value="parametry">konfiguracje</option>
+        </select>
+        <br>
+        <form class="marka" method="POST" action="{% url 'moderate' %}">
+            {% csrf_token %}
+            {{ marka.as_p }}
+            <input type="submit" name="submit" value="dodaj marke" />
+        </form>
+        <form class="samochod" method="POST" action="{% url 'moderate' %}">
+            {% csrf_token %}
+            {{ samochod.as_p }}
+            <input type="submit" name="submit" value="dodaj samochod" />
+        </form>
+        <form class="nadwozie" method="GET" action="{% url 'moderate' %}">
+            {% csrf_token %}
+            {{ nadwozie.as_p }}
+            <input type="submit" name="submit" value="dodaj nadwozie" />
+        </form>
+        <form class="silnik" method="POST" action="{% url 'moderate' %}">
+            {% csrf_token %}
+            {{ silnik.as_p }}
+            <input type="submit" name="submit" value="dodaj silnik" />
+        </form>
+        <form class="parametry" method="POST" action="{% url 'moderate' %}">
+            {% csrf_token %}
+            {{ parametry.as_p }}
+            <input type="submit" name="submit" value="dodaj konfiguracje" />
+        </form>
+    {% else %}
+        Nie posiadasz uprawnień do tej strony.
+        {% include "loginWindow.html" %}
+    {% endif %}
 
 
-<a href="/">Strona główna</a></div>
-
-
+    <a href="/">Strona główna</a></div>
 {% endblock %}

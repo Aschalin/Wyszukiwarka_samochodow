@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<H1>{{car.Marka}} {{car.Model}}</H1>
+<H1>{{car.Marka}} {{car.Model}} {{nadwozie.Rodzaj}} {{silnik}}</H1>
+<a href="/editParametry/{{s_id}}/{{nadwozie.id}}/{{silnik.id}}">edytuj parametry</a>
+<a href="/editSilnik/{{s_id}}/{{silnik.id}}">edytuj silnik</a>
 <br><br>
     <table>
         <th></th>

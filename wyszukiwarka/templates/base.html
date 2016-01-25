@@ -11,7 +11,9 @@
             <a href="{% url 'index' %}"> Strona Główna</a> |
             <a href="{% url 'wyszukiwanie' %}"> Wyszukaj</a> |
             <a href="{% url 'przegladanie' 0 %}"> Przeglądaj</a>
-
+            {% if user.is_authenticated %}
+             | <a href="{% url 'moderate' %}"> Dodaj do Bazy</a>
+            {%endif%}
         <span style="float:right;">
             {% if user.is_authenticated %}
               użytkownik:  <b>{{user.username}}</b>    <a href="/logout/">wyloguj się</a>

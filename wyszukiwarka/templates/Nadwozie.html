@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<H1>{{car.Marka}} {{text}} {{car.Model}}</H1>
+<H1>{{car.Marka}} {{text}} {{car.Model}} {{nadwozie.Rodzaj}}</H1> <a href="/editNadwozie/{{s_id}}/{{nadwozie.id}}">edytuj</a>
 <table>
             <tr>
             {%for f in files%}
