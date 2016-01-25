@@ -13,9 +13,9 @@ urlpatterns = [
     url(r'^porownanie/(?P<s_id>[\w\-]+)/$', views.porownanie, name='porownanie'),
     url(r'^login/$', login, name='login'),
     url(r'^moderate/$', views.moderate, name='moderate'),
-    url(r'^editSilnik/(?P<s_id>[\w\-]+)/(?P<e_id>[\w\-]+)$', views.editSilnik, name='editSilnik'),
-    url(r'^editNadwozie/(?P<s_id>[\w\-]+)/(?P<n_id>[\w\-]+)$', views.editNadwozie, name='editNadwozie'),
+    url(r'^editSilnik/(?P<s_id>[\w\-]+)/(?P<c_id>[\w\-]+)/(?P<n_id>[\w\-]+)/(?P<e_id>[\w\-]+)$', views.editSilnik, name='editSilnik'),
+    url(r'^editNadwozie/(?P<s_id>[\w\-]+)/(?P<c_id>[\w\-]+)/(?P<n_id>[\w\-]+)$', views.editNadwozie, name='editNadwozie'),
     url(r'^editSamochod/(?P<s_id>[\w\-]+)/(?P<c_id>[\w\-]+)$', views.editSamochod, name='editSamochod'),
-    url(r'^editParametry/(?P<s_id>[\w\-]+)/(?P<n_id>[\w\-]+)/(?P<e_id>[\w\-]+)$', views.editParametry, name='editParametry'),
+    url(r'^editParametry/(?P<s_id>[\w\-]+)/(?P<c_id>[\w\-]+)/(?P<n_id>[\w\-]+)/(?P<e_id>[\w\-]+)$', views.editParametry, name='editParametry'),
     url(r'^logout/$',views.logout_page, name='logout'),
 ]

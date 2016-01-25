@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Max
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import logout
 
 from models import *
@@ -196,12 +196,14 @@ def editSamochod(request, s_id, c_id):
         if form.is_valid():
             form = form.save(commit=False)
             form.save()
+            ret = str("/szczegoly/" + s_id + "/" + c_id)
+            return redirect("/szczegoly/" + s_id + "/" + c_id)
     else:
         c['form'] = samochodForm(instance=samochod)
     c['type'] = "samochodu"
     return render(request, "registration/editDB.html", c)
 
-def editNadwozie(request, s_id, n_id):
+def editNadwozie(request, s_id, c_id, n_id):
     c={}
     nadwozie=Nadwozia.objects.get(id=n_id);
     if request.method=='POST':
@@ -209,12 +211,13 @@ def editNadwozie(request, s_id, n_id):
         if form.is_valid():
             form = form.save(commit=False)
             form.save()
+            return redirect("/szczegoly/" + s_id + "/" + c_id + "/" + n_id)
     else:
         c['form'] = nadwozieForm(instance=nadwozie)
     c['type'] = "nadwozia"
     return render(request, "registration/editDB.html", c)
 
-def editSilnik(request, s_id, e_id):
+def editSilnik(request, s_id, c_id, n_id, e_id):
     c={}
     silnik = Silniki.objects.get(id = e_id);
     if request.method=='POST':
@@ -222,12 +225,13 @@ def editSilnik(request, s_id, e_id):
         if form.is_valid():
             form = form.save(commit=False)
             form.save()
+            return redirect("/szczegoly/" + s_id + "/" + c_id + "/" + n_id + "/" + e_id)
     else:
         c['form'] = silnikForm(instance=silnik)
     c['type'] = "silnika"
     return render(request, "registration/editDB.html", c)
 
-def editParametry(request, s_id, n_id, e_id):
+def editParametry(request, s_id, c_id, n_id, e_id):
     c={}
     nadwozie = Nadwozia.objects.get(id = n_id)
     silnik = Silniki.objects.get(id = e_id)
@@ -239,6 +243,7 @@ def editParametry(request, s_id, n_id, e_id):
         if form.is_valid():
             form = form.save(commit=False)
             form.save()
+            return redirect("/szczegoly/" + s_id + "/" + c_id + "/" + n_id + "/" + e_id)
     else:
         c['form'] = parametryForm(instance=parametry[0])
     c['type'] = "silnika"
