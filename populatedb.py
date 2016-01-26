@@ -20,7 +20,7 @@ def marki():
 
 def samochody():
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_samochody` (
-                    `id` int(11) NOT NULL,
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
                     `Model` varchar(30) NOT NULL,
                     `Rocznik` int(11) NOT NULL,
                     `Cena` int(11) NOT NULL,
@@ -58,7 +58,7 @@ def samochody():
 
 def nadwozia():
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_nadwozia` (
-                    `id` int(11) NOT NULL,
+                    `id` int(11) NOT NULL  AUTO_INCREMENT,
                     `Rodzaj` varchar(30) NOT NULL,
                     `Oplata` int(11) NOT NULL,
                     `idSamochod` int(11) NOT NULL,
@@ -140,7 +140,7 @@ def nadwozia():
 
 def silniki():
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_silniki` (
-                    `id` int(11) NOT NULL,
+                    `id` int(11) NOT NULL  AUTO_INCREMENT,
                     `Rodzaj` varchar(10) NOT NULL,
                     `Paliwo` varchar(1) NOT NULL,
                     `Pojemnosc` double NOT NULL,
@@ -260,7 +260,7 @@ def silniki():
 
 def silnikiNadwozia():
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_silniki_nadwozia` (
-                    `id` int(11) NOT NULL,
+                    `id` int(11) NOT NULL  AUTO_INCREMENT,
                     `Spalanie` double NOT NULL,
                     `Przyspieszenie` double NOT NULL,
                     `VMax` int(11) NOT NULL,
@@ -579,7 +579,7 @@ def wyszukiwanie():
 
 def zdjecia():
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_zdjecia` (
-                `id` int(11) NOT NULL,
+                `id` int(11) NOT NULL  AUTO_INCREMENT,
                 `plik` longBlob NOT NULL,
                 `idNadwozie` int(11) NOT NULL,
                 PRIMARY KEY (id),
@@ -833,7 +833,7 @@ try:
         silnikiNadwozia()
         wyszukiwanie()
         zdjecia()
-        dodatki()
+        #dodatki()
         views()
 
 except mdb.Error, e:
