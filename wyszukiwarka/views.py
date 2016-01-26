@@ -70,7 +70,10 @@ def model(request, s_id, c_id):
     nadwozia = nadwozia.filter(Samochod = car)
     c['car'] = car
     c['s_id'] = s_id
-    c['cenaMax'] = car.Cena + (maxPrice.objects.raw("call samochodMaxPrice(" + c_id + ");"))[0].Cena
+    try:
+        c['cenaMax'] = car.Cena + (maxPrice.objects.raw("call samochodMaxPrice(" + c_id + ");"))[0].Cena
+    except TypeError:
+        pass
     c['nadwozia'] = nadwozia
     c['nadwoziaMax'] = list(maxPrice.objects.raw("call nadwozieMaxPrice(" + c_id + ");"))
     print(c['nadwoziaMax'])
