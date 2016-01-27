@@ -7,7 +7,6 @@ Wyszukane Pojazdy:<br>
         <table>
             <input type="submit" value="porównaj">
             {% for c in cars %}
-                <th></th>
                 <tr>
                     <td><input type="checkbox" name="cars" value="{{c.id}}"></td>
                     <td><a href="/szczegoly/{{s_id}}/{{c.id}}">{{c.Marka}}</a></td>

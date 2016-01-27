@@ -14,7 +14,6 @@
 </table>
 <br><br>
     <table>
-        <th></th>
         <tr><td>Marka:   </td><td>{{car.Marka}}</td></tr>
         <tr><td>Model:   </td><td>{{car.Model}}</td></tr>
         <tr><td>Rocznik: </td><td>{{car.Rocznik}}</td></tr>
@@ -24,7 +23,6 @@
     <br>
     Dostępne silniki benzynowe:
     <table>
-        <th>
         <tr> <td></td> <td>   </td> <td>cena:</td></tr>
         {% for s in benzynowe %}
         <tr>
@@ -37,13 +35,11 @@
             {% endfor %}
         </tr>
         {% endfor %}
-        </th>
 
     </table>
     <br>
     Dostępne silniki Diesla:
     <table>
-        <th>
         <tr> <td></td> <td>   </td> <td>cena:</td></tr>
         {% for s in diesla %}
         <tr>
@@ -56,7 +52,6 @@
             {% endfor %}
         </tr>
         {% endfor %}
-        </th>
 
     </table>
     <br>

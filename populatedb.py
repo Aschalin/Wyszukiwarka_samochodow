@@ -28,7 +28,7 @@ def samochody():
                     PRIMARY KEY (id),
                     FOREIGN KEY (idMarka) REFERENCES wyszukiwarka_marki(id))
                     ENGINE=MyISAM DEFAULT CHARSET=latin1;
-                    """);
+                    """)
     cur.execute("""INSERT INTO `wyszukiwarka_samochody` (`id`, `Model`, `Rocznik`, `Cena`, `idMarka`) VALUES
                     (12, 'Tourneo Courier', 2015, 57503, 2),
                     (11, 'Tourneo Connect', 2015, 70602, 2),
@@ -817,7 +817,7 @@ def readFile(path):
     return "".join("{:02x}".format(ord(c)) for c in result)
 
 try:
-    con = mdb.connect('127.0.0.1', 'root', '', 'wyszukiwarka');
+    con = mdb.connect('127.0.0.1', 'root', '', 'wyszukiwarka')
 
     with con:
 

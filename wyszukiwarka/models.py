@@ -62,7 +62,7 @@ class Silniki(models.Model):
     KM = models.IntegerField(default='100')
 
     def __unicode__(self):
-        return str(self.Pojemnosc) + ' ' + self.Rodzaj + ' ' + str(self.KM)
+        return str(self.Pojemnosc + ' ' + self.Rodzaj + ' ' + str(self.KM))
 
     class Meta:
         managed = False
@@ -137,6 +137,7 @@ class Porownania(models.Model):
     class Meta:
         managed = False
 
+
 class Silniki_Parametry(models.Model):
     Benzyna = 'B'
     Diesel = 'D'
@@ -158,6 +159,7 @@ class Silniki_Parametry(models.Model):
     class Meta:
         managed = False
         verbose_name_plural = 'Parametry silnikow'
+
 
 class maxPrice(models.Model):
     id = models.CharField(primary_key=True, max_length=35, editable=False)
