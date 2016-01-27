@@ -3,8 +3,8 @@
 {% block content %}
 <H1>{{car.Marka}} {{car.Model}} {{nadwozie.Rodzaj}} {{silnik}}</H1>
 {% if user.is_authenticated %}
-<a href="/editParametry/{{s_id}}/{{nadwozie.id}}/{{silnik.id}}">edytuj parametry</a>
-<a href="/editSilnik/{{s_id}}/{{silnik.id}}">edytuj silnik</a>
+<a href="/editParametry/{{s_id}}/{{car.id}}/{{nadwozie.id}}/{{silnik.id}}">edytuj parametry</a>
+<a href="/editSilnik/{{s_id}}/{{car.id}}/{{nadwozie.id}}/{{silnik.id}}">edytuj silnik</a>
 {% endif %}
 <br><br>
     <table>
