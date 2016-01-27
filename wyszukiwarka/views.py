@@ -78,7 +78,7 @@ def przegladanie(request, s_id = 0):
 
 def przegladzaawansowany(request, s_id=0):
     c={}
-    baseSilniki = Silniki_Nadwozia.objects.all()
+    baseSilniki = Silniki_Parametry.objects.all()
 
     if s_id != '0':
         try:

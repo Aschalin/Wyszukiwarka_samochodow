@@ -798,7 +798,9 @@ def views():
                 en.Przyspieszenie AS Przyspieszenie,
                 en.VMax AS VMax,
                 en.Oplata AS Cena,
-                en.idNadwozie AS idNadwozie
+                en.idNadwozie AS idNadwozie,
+                e.Pojemnosc AS Pojemnosc,
+                e.KM AS KM
                 FROM
                 wyszukiwarka_silniki_nadwozia en join wyszukiwarka_silniki e on e.id=en.idSilnik
                 """)

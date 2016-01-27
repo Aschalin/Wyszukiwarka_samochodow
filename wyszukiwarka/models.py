@@ -174,6 +174,8 @@ class Silniki_Parametry(models.Model):
     VMax = models.IntegerField(default='0')
     Cena = models.BigIntegerField(default='')
     Nadwozie = models.ForeignKey(Nadwozia, db_column='idNadwozie')
+    Pojemnosc = models.FloatField(default=1.0)
+    KM = models.IntegerField(default='100')
 
     class Meta:
         managed = False
