@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <form id="page_form" method="POST" action="{% url 'zaawansowane' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" name="submit" value="Wyszukaj" />
+        </form>
+{% endblock %}

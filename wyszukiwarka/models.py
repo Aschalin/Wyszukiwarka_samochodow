@@ -25,7 +25,7 @@ class Samochody(models.Model):
     Cena = models.IntegerField(default='')
 
     def __unicode__(self):
-        return self.Model
+        return str(self.Marka) + ' ' + self.Model
 
     class Meta:
         managed = False
@@ -39,7 +39,7 @@ class Nadwozia(models.Model):
     Oplata = models.IntegerField(default='0')
 
     def __unicode__(self):
-        return self.Rodzaj
+        return str(self.Samochod) + ' ' + self.Rodzaj
 
     class Meta:
         managed = False
@@ -62,7 +62,7 @@ class Silniki(models.Model):
     KM = models.IntegerField(default='100')
 
     def __unicode__(self):
-        return str(self.Pojemnosc + ' ' + self.Rodzaj + ' ' + str(self.KM))
+        return str(self.Pojemnosc) + ' ' + self.Rodzaj + ' ' + str(self.KM) + 'KM'
 
     class Meta:
         managed = False
@@ -93,6 +93,25 @@ class Wyszukiwanie(models.Model):
     Rocznik_do = models.IntegerField(default=2015, blank=True, null=True)
     Cena_od = models.IntegerField(default='', blank=True, null=True)
     Cena_do = models.IntegerField(default='', blank=True, null=True)
+
+    def __unicode__(self):
+        return self.Model
+
+    class Meta:
+        managed = False
+
+class Zaawansowane(models.Model):
+    id = models.AutoField(primary_key=True, editable=False)
+    Spalanie_od = models.FloatField(default='', blank=True, null=True)
+    Spalanie_do = models.FloatField(default='', blank=True, null=True)
+    Przyspieszenie_od_0_do_100_od = models.FloatField(default='', blank=True, null=True)
+    Przyspieszenie_od_0_do_100_do = models.FloatField(default='', blank=True, null=True)
+    Predkosc_maksymalna_od = models.IntegerField(default='', blank=True, null=True)
+    Predkosc_maksymalna_do = models.IntegerField(default='', blank=True, null=True)
+    Pojemnosc_silnika_od = models.FloatField(default='', blank=True, null=True)
+    Pojemnosc_silnika_do = models.FloatField(default='', blank=True, null=True)
+    Moc_od = models.IntegerField(default='', blank=True, null=True)
+    Moc_do = models.IntegerField(default='', blank=True, null=True)
 
     def __unicode__(self):
         return self.Model

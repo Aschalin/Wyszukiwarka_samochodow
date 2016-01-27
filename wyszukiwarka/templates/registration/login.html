@@ -4,12 +4,12 @@
 Logowanie jest wymagane, jeżeli chcesz edytować bazę danych.
 <form method="post" action=".">
     {% csrf_token %}
-    <div style="text-align:left;">{{ form.as_p }}</div>
+    <div style="text-align:left";>{{ form.as_p }}</div>
     <input type="hidden" name="next" value="/moderate/" />
     <input type="submit" value="Logowanie"/>
     <input type="reset" value="Wartości domyślne"/>
 </form>
 <br>
 <br>
-<a href="/">Strona główna</a>
+<a href="/">Strona główna</a></div>
 {% endblock %}

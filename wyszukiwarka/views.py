@@ -25,6 +25,20 @@ def wyszukiwanie(request):
     c['form'] = form
     return render(request, "wyszukiwanie.html", c)
 
+def zaawansowane(request):
+    c={}
+    if request.method=='POST':
+        form=AdvancedForm(request.POST)
+        if form.is_valid():
+            zaawansowane = form.save(commit=False)
+            zaawansowane.save()
+            return redirect("/przegladzaawansowany/" + str(zaawansowane.id))
+    else:
+        form=AdvancedForm()
+    c['form']=form
+    c['goto']='zaawansowane'
+    return render(request, "zaawansowane.html", c)
+
 def przegladanie(request, s_id = 0):
     c = {}
     baseCars = Samochody.objects.all()
@@ -61,17 +75,69 @@ def przegladanie(request, s_id = 0):
     c['s_id'] = s_id
     return render(request, "przegladanie.html", c)
 
+
+def przegladzaawansowany(request, s_id=0):
+    c={}
+    baseSilniki = Silniki_Nadwozia.objects.all()
+
+    if s_id != '0':
+        try:
+            szukane = Zaawansowane.objects.get(id=s_id)
+            if szukane.Spalanie_od:
+                baseSilniki = baseSilniki.filter(Spalanie__gte=szukane.Spalanie_od)
+            if szukane.Spalanie_do:
+                baseSilniki = baseSilniki.filter(Spalanie__lte=szukane.Spalanie_do)
+            if szukane.Przyspieszenie_od_0_do_100_od:
+                baseSilniki = baseSilniki.filter(Przyspieszenie__gte=szukane.Przyspieszenie_od_0_do_100_od)
+            if szukane.Przyspieszenie_od_0_do_100_do:
+                baseSilniki = baseSilniki.filter(Przyspieszenie__lte=szukane.Przyspieszenie_od_0_do_100_do)
+            if szukane.Predkosc_maksymalna_od:
+                baseSilniki = baseSilniki.filter(VMax__gte=szukane.Predkosc_maksymalna_od)
+            if szukane.Predkosc_maksymalna_do:
+                baseSilniki = baseSilniki.filter(VMax__lte=szukane.Predkosc_maksymalna_do)
+            if szukane.Pojemnosc_silnika_od:
+                baseSilniki = baseSilniki.filter(Pojemnosc__gte=szukane.Pojemnosc_silnika_od)
+            if szukane.Pojemnosc_silnika_do:
+                baseSilniki = baseSilniki.filter(Pojemnosc__lte=szukane.Pojemnosc_silnika_do)
+            if szukane.Moc_od:
+                baseSilniki = baseSilniki.filter(KM__gte=szukane.Moc_od)
+            if szukane.Moc_do:
+                baseSilniki = baseSilniki.filter(KM__lte=szukane.Moc_do)
+        except ObjectDoesNotExist:
+            pass
+            return redirect("/przegladzaawansowany/0/")
+
+
+    baseSilniki = baseSilniki.order_by('Nadwozie')
+    page = request.GET.get('page')
+    if not page:
+       page=1
+    paginator = Paginator(baseSilniki, 10)
+    try:
+        engines = paginator.page(page)
+    except EmptyPage:
+        engines = paginator.page(paginator.num_pages)
+    c['engines']=engines
+    c['s_id']=s_id
+    return render(request, "przegladzaawansowany.html", c)
+
 def model(request, s_id, c_id):
     c = {}
     car = Samochody.objects.get(id = c_id)
     nadwozia = Nadwozia.objects.all()
     nadwozia = nadwozia.filter(Samochod = car)
+    files = Zdjecia.objects.all()
+    files = files.filter(Nadwozie__in = nadwozia)
+    for f in files:
+        f.Plik = b64encode(f.Plik)
     c['car'] = car
     c['s_id'] = s_id
     try:
         c['cenaMax'] = car.Cena + (maxPrice.objects.raw("call samochodMaxPrice(" + c_id + ");"))[0].Cena
     except TypeError:
         pass
+
+    c['files'] = files
     c['nadwozia'] = nadwozia
     c['nadwoziaMax'] = list(maxPrice.objects.raw("call nadwozieMaxPrice(" + c_id + ");"))
     print(c['nadwoziaMax'])
@@ -249,3 +315,11 @@ def editParametry(request, s_id, c_id, n_id, e_id):
         c['form'] = parametryForm(instance = parametry[0])
     c['type'] = "silnika"
     return render(request, "registration/editDB.html", c)
+
+def szczegolysilnika(request, s_id, p_id):
+    c={}
+    parametry = Silniki_Nadwozia.objects.get(id=p_id)
+    c_id = str(parametry.Nadwozie.Samochod.id)
+    n_id = str(parametry.Nadwozie.id)
+    e_id = str(parametry.Silnik.id)
+    return redirect("/szczegoly/" + s_id + "/" + c_id + "/" + n_id + "/" + e_id)

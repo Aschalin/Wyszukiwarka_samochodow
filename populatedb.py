@@ -577,6 +577,25 @@ def wyszukiwanie():
                     ENGINE=MyISAM DEFAULT CHARSET=latin1;
                     """)
 
+
+def zaawansowane():
+    cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_zaawansowane` (
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `Spalanie_od`  double DEFAULT NULL,
+                    `Spalanie_do`  double DEFAULT NULL,
+                    `Przyspieszenie_od_0_do_100_od` double DEFAULT NULL,
+                    `Przyspieszenie_od_0_do_100_do` double DEFAULT NULL,
+                    `Predkosc_maksymalna_od` int(11) DEFAULT NULL,
+                    `Predkosc_maksymalna_do` int(11) DEFAULT NULL,
+                    `Pojemnosc_silnika_od` double DEFAULT NULL,
+                    `Pojemnosc_silnika_do` double DEFAULT NULL,
+                    `Moc_od` int(11) DEFAULT NULL,
+                    `Moc_do` int(11) DEFAULT NULL,
+
+                    PRIMARY KEY (id))
+                    ENGINE=MyISAM DEFAULT CHARSET=latin1;
+                    """)
+
 def zdjecia():
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_zdjecia` (
                 `id` int(11) NOT NULL  AUTO_INCREMENT,
@@ -832,6 +851,7 @@ try:
         silniki()
         silnikiNadwozia()
         wyszukiwanie()
+        zaawansowane()
         zdjecia()
         #dodatki()
         views()

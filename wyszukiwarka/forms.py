@@ -10,6 +10,10 @@ class SearchForm(forms.ModelForm):
         model = Wyszukiwanie
         fields = ('Marka', 'Model', 'Rocznik_od', 'Rocznik_do', 'Cena_od', 'Cena_do')
 
+class AdvancedForm(forms.ModelForm):
+    class Meta:
+        model = Zaawansowane
+        fields = ('Spalanie_od','Spalanie_do', 'Przyspieszenie_od_0_do_100_od', 'Przyspieszenie_od_0_do_100_do', 'Predkosc_maksymalna_od', 'Predkosc_maksymalna_do', 'Pojemnosc_silnika_od', 'Pojemnosc_silnika_do', 'Moc_od', 'Moc_do')
 
 class markaForm(forms.ModelForm):
     class Meta:

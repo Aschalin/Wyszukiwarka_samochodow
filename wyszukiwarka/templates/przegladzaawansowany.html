@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+Samochody posiadające silniki spełniające wymogi::<br>
+<br>
+
+        <table>
+           {% for e in engines %}
+                <th></th>
+                <tr>
+                    <td><a href="/szczegolysilnika/{{s_id}}/{{e.id}}">{{e.Nadwozie}}</a></td>
+                    <td>({{e.Silnik}})</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
+
+    {% include "_paginator.html" with pagin=engines filters=filters %}
+{% endblock %}
