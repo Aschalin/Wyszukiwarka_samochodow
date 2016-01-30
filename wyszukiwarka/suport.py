@@ -3,7 +3,6 @@ from wyszukiwarka.models import Komentarze
 
 
 def handleComments(request):
-    komentarze = list(Komentarze.objects.filter(site = request.path))
     if request.method == 'POST':
         type = request.POST.get('submit')
         nowy = komentarzForm(request.POST)
@@ -14,6 +13,7 @@ def handleComments(request):
             nowy.site = request.path
             nowy.save()
     rate = 0
+    komentarze = list(Komentarze.objects.filter(site = request.path))
     for r in komentarze:
         rate+=r.Rate
     if len(komentarze)>0:
