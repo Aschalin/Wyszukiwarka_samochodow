@@ -1,9 +1,17 @@
 # coding=utf-8
 import datetime
 from django import forms
+from django.contrib.auth.models import User
+
 from wyszukiwarka.models import *
 from django.core.exceptions import ObjectDoesNotExist
 
+class registerForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
 
 class SearchForm(forms.ModelForm):
     class Meta:
@@ -43,3 +51,8 @@ class parametryForm(forms.ModelForm):
     class Meta:
         model = Silniki_Nadwozia
         fields = ('Nadwozie', 'Silnik', 'Spalanie', 'Przyspieszenie', 'VMax', 'Oplata')
+
+class komentarzForm(forms.ModelForm):
+    class Meta:
+        model = Komentarze
+        fields = ('Text',)

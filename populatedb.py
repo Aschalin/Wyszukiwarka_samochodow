@@ -577,7 +577,6 @@ def wyszukiwanie():
                     ENGINE=MyISAM DEFAULT CHARSET=latin1;
                     """)
 
-
 def zaawansowane():
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_zaawansowane` (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -830,7 +829,6 @@ def dodatki():
                         WHERE n.idSamochod = s_id AND(n.Oplata + en.Oplata) = 0
                     )
                     """)
-
 
 def readFile(path):
     with open(path, 'rb') as f:

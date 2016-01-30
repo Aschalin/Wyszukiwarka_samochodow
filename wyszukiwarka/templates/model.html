@@ -2,7 +2,8 @@
 
 {% block content %}
 <H1>{{car.Marka}} {{car.Model}}</H1>
-{% if user.is_authenticated %}
+{% include "rating.html" with rating=rating grange=grange srange=srange edgeStar=edgeStar %}
+{% if auth %}
 <a href="/editSamochod/{{s_id}}/{{car.id}}">edytuj</a>
 {% endif %}
 
@@ -42,6 +43,7 @@
         </tr>
     </table>
     <br>
+    {% include "komentarze.html" with komentarze=komentarze form=form url=request.path %}
 
 <a href="/przegladanie/{{s_id}}">wróć do wyników wyszukiwania</a>
 {% endblock %}

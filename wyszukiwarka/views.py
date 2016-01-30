@@ -3,17 +3,26 @@ from django.db.models import Max
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import logout
+from django.template import RequestContext
+
 from models import *
 from django.http import HttpResponse
 from wyszukiwarka.forms import *
 from base64 import b64encode
 from django.core.exceptions import ObjectDoesNotExist
 
+from wyszukiwarka.suport import handleComments
+
+
 def index(request):
-    return render(request, "base.html", {})
+    c = {}
+    c['auth'] = len(list(request.user.groups.all()))
+    return render(request, "base.html", c)
 
 def wyszukiwanie(request):
     c = {}
+    c['auth'] = len(list(request.user.groups.all()))
+
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
@@ -27,6 +36,7 @@ def wyszukiwanie(request):
 
 def zaawansowane(request):
     c={}
+    c['auth'] = len(list(request.user.groups.all()))
     if request.method=='POST':
         form=AdvancedForm(request.POST)
         if form.is_valid():
@@ -41,6 +51,7 @@ def zaawansowane(request):
 
 def przegladanie(request, s_id = 0):
     c = {}
+    c['auth'] = len(list(request.user.groups.all()))
     baseCars = Samochody.objects.all()
     if s_id != '0':
         try:
@@ -78,6 +89,7 @@ def przegladanie(request, s_id = 0):
 
 def przegladzaawansowany(request, s_id=0):
     c={}
+    c['auth'] = len(list(request.user.groups.all()))
     baseSilniki = Silniki_Parametry.objects.all()
 
     if s_id != '0':
@@ -136,7 +148,9 @@ def model(request, s_id, c_id):
         c['cenaMax'] = car.Cena + (maxPrice.objects.raw("call samochodMaxPrice(" + c_id + ");"))[0].Cena
     except TypeError:
         pass
-
+    komentarze = handleComments(request)
+    c.update(komentarze)
+    c['auth'] = request.user.groups.filter(name = car.Marka).exists()
     c['files'] = files
     c['nadwozia'] = nadwozia
     c['nadwoziaMax'] = list(maxPrice.objects.raw("call nadwozieMaxPrice(" + c_id + ");"))
@@ -158,6 +172,9 @@ def nadwozie(request, s_id, c_id, n_id):
     for f in files:
         f.Plik = b64encode(f.Plik)
     cenaMax = parametry.aggregate(Max('Oplata'))['Oplata__max']
+    komentarze = handleComments(request)
+    c.update(komentarze)
+    c['auth'] = request.user.groups.filter(name = car.Marka).exists()
     c['cenaMax'] = cenaMax
     c['files'] = files
     c['car'] = car
@@ -176,6 +193,9 @@ def silnik(request, s_id, c_id, n_id, e_id):
     parametry = Silniki_Nadwozia.objects.all()
     parametry = parametry.filter(Nadwozie = nadwozie)
     parametry = parametry.filter(Silnik = silnik)
+    komentarze = handleComments(request)
+    c.update(komentarze)
+    c['auth'] = request.user.groups.filter(name = car.Marka).exists()
     c['car'] = car
     c['s_id'] = s_id
     c['nadwozie'] = nadwozie
@@ -185,6 +205,7 @@ def silnik(request, s_id, c_id, n_id, e_id):
 
 def porownanie(request, s_id):
     c = {}
+    c['auth'] = len(list(request.user.groups.all()))
     id = request.GET.getlist('cars')
     cars = Samochody.objects.all()
     cars = list(cars.filter(id__in = id))
@@ -211,22 +232,29 @@ def moderate(request):
     c = {}
     done = False
     succes = ''
+    auth = list(request.user.groups.all())
     if request.method == 'POST':
         type = request.POST.get('submit')
         if type == 'dodaj marke':
             marka = markaForm(request.POST)
             if marka.is_valid():
-                marka = marka.save(commit = False)
-                marka.save()
-                succes = "Dodano nowa Marke do bazy"
-                done = True
+                if 'admin' in auth['Group']:
+                    marka = marka.save(commit = False)
+                    marka.save()
+                    succes = "Dodano nowa Marke do bazy"
+                    done = True
+                else:
+                    succes = "nie masz wystarczajacych uprawnien"
         elif type == 'dodaj samochod':
             samochod = samochodForm(request.POST)
             if samochod.is_valid():
                 samochod = samochod.save(commit = False)
-                samochod.save()
-                succes = "Dodano nowy Model do bazy"
-                done = True
+                if request.user.groups.filter(name = samochod.Marka).exists():
+                    samochod.save()
+                    succes = "Dodano nowy Model do bazy"
+                    done = True
+                else:
+                    succes = "nie masz wystarczajacych uprawnien"
         elif type == 'dodaj nadwozie':
             nadwozie = nadwozieForm(request.POST)
             if nadwozie.is_valid():
@@ -253,10 +281,12 @@ def moderate(request):
     c['silnik'] = silnikForm()
     c['parametry'] = parametryForm()
     c['succes'] = succes
+    c['auth'] = len(auth)
     return render(request, "registration/moderate.html", c)
 
 def editSamochod(request, s_id, c_id):
     c = {}
+    c['auth'] = len(list(request.user.groups.all()))
     samochod = Samochody.objects.get(id = c_id)
     if request.method == 'POST':
         form = samochodForm(request.POST, instance = samochod)
@@ -272,6 +302,7 @@ def editSamochod(request, s_id, c_id):
 
 def editNadwozie(request, s_id, c_id, n_id):
     c = {}
+    c['auth'] = len(list(request.user.groups.all()))
     nadwozie = Nadwozia.objects.get(id = n_id)
     if request.method == 'POST':
         form = nadwozieForm(request.POST, instance = nadwozie)
@@ -286,6 +317,7 @@ def editNadwozie(request, s_id, c_id, n_id):
 
 def editSilnik(request, s_id, c_id, n_id, e_id):
     c = {}
+    c['auth'] = len(list(request.user.groups.all()))
     silnik = Silniki.objects.get(id = e_id)
     if request.method == 'POST':
         form = silnikForm(request.POST, instance = silnik)
@@ -300,6 +332,7 @@ def editSilnik(request, s_id, c_id, n_id, e_id):
 
 def editParametry(request, s_id, c_id, n_id, e_id):
     c = {}
+    c['auth'] = len(list(request.user.groups.all()))
     nadwozie = Nadwozia.objects.get(id = n_id)
     silnik = Silniki.objects.get(id = e_id)
     parametry = Silniki_Nadwozia.objects.all()
@@ -317,9 +350,28 @@ def editParametry(request, s_id, c_id, n_id, e_id):
     return render(request, "registration/editDB.html", c)
 
 def szczegolysilnika(request, s_id, p_id):
-    c={}
     parametry = Silniki_Nadwozia.objects.get(id=p_id)
     c_id = str(parametry.Nadwozie.Samochod.id)
     n_id = str(parametry.Nadwozie.id)
     e_id = str(parametry.Silnik.id)
     return redirect("/szczegoly/" + s_id + "/" + c_id + "/" + n_id + "/" + e_id)
+
+def register(request):
+    c={}
+    c['auth'] = len(list(request.user.groups.all()))
+    context = RequestContext(request)
+    registered = False
+    if request.method == 'POST':
+        form = registerForm(data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.set_password(user.password)
+            user.save()
+            registered = True
+        else:
+            print form.errors
+    else:
+        form = registerForm()
+    c['form'] = form
+    c['registered'] = registered
+    return render(request, 'registration/register.html', c)

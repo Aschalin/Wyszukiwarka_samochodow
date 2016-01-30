@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -188,3 +189,10 @@ class maxPrice(models.Model):
 
     class Meta:
         managed = False
+
+class Komentarze(models.Model):
+    User = models.ForeignKey(User, db_column='idUser')
+    Rate = models.IntegerField(default = 0)
+    site = models.CharField(max_length = 20)
+    Text = models.TextField()
+    Time = models.DateTimeField(auto_now = False, auto_now_add = True)

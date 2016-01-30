@@ -2,7 +2,8 @@
 
 {% block content %}
 <H1>{{car.Marka}} {{car.Model}} {{nadwozie.Rodzaj}} {{silnik}}</H1>
-{% if user.is_authenticated %}
+{% include "rating.html" with rating=rating grange=grange srange=srange edgeStar=edgeStar %}
+{% if auth %}
 <a href="/editParametry/{{s_id}}/{{car.id}}/{{nadwozie.id}}/{{silnik.id}}">edytuj parametry</a>
 <a href="/editSilnik/{{s_id}}/{{car.id}}/{{nadwozie.id}}/{{silnik.id}}">edytuj silnik</a>
 {% endif %}
@@ -19,7 +20,8 @@
         <tr><td></td><td>Przyspieszenie 0-100km: </td><td>{{parametry.Przyspieszenie}}</td></tr>
         <tr><td></td><td>Prędkość maksymalna: </td><td>{{parametry.VMax}}</td></tr>
     </table>
-    <br>
+
+    {% include "komentarze.html" with komentarze=komentarze form=form url=request.path %}
 
 <a href="/przegladanie/{{s_id}}">wróć do wyników wyszukiwania</a>
 {% endblock %}

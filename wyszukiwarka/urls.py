@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^szczegolysilnika/(?P<s_id>[\w\-]+)/(?P<p_id>[\w\-]+)$', szczegolysilnika, name='model'),
     url(r'^porownanie/(?P<s_id>[\w\-]+)/$', porownanie, name='porownanie'),
     url(r'^login/$', login, name='login'),
+    url(r'^register/$', register, name='register'),
     url(r'^moderate/$', moderate, name='moderate'),
     url(r'^editSilnik/(?P<s_id>[\w\-]+)/(?P<c_id>[\w\-]+)/(?P<n_id>[\w\-]+)/(?P<e_id>[\w\-]+)$', editSilnik, name='editSilnik'),
     url(r'^editNadwozie/(?P<s_id>[\w\-]+)/(?P<c_id>[\w\-]+)/(?P<n_id>[\w\-]+)$', editNadwozie, name='editNadwozie'),

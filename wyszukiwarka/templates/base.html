@@ -2,6 +2,148 @@
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script>
+        $(document).ready(function()
+            {
+                $("#hid").hide();
+                $(".g1").hide();
+                $(".g2").hide();
+                $(".g3").hide();
+                $(".g4").hide();
+                $(".g5").hide();
+
+                $(".g1").click(function(){
+                    $(".g1").hide();
+                    $(".g2").hide();
+                    $(".g3").hide();
+                    $(".g4").hide();
+                    $(".g5").hide();
+                    $(".s1").show();
+                    $(".s2").show();
+                    $(".s3").show();
+                    $(".s4").show();
+                    $(".s5").show();
+                    $("#hid").val("0");
+                });
+                $(".s1").click(function(){
+                    $(".s1").hide();
+                    $(".g2").hide();
+                    $(".g3").hide();
+                    $(".g4").hide();
+                    $(".g5").hide();
+                    $(".g1").show();
+                    $(".s2").show();
+                    $(".s3").show();
+                    $(".s4").show();
+                    $(".s5").show();
+                    $("#hid").val("1");
+                });
+                $(".g2").click(function(){
+                    $(".s1").hide();
+                    $(".g2").hide();
+                    $(".g3").hide();
+                    $(".g4").hide();
+                    $(".g5").hide();
+                    $(".g1").show();
+                    $(".s2").show();
+                    $(".s3").show();
+                    $(".s4").show();
+                    $(".s5").show();
+                    $("#hid").val("1");
+                });
+                $(".s2").click(function(){
+                    $(".s1").hide();
+                    $(".s2").hide();
+                    $(".g3").hide();
+                    $(".g4").hide();
+                    $(".g5").hide();
+                    $(".g1").show();
+                    $(".g2").show();
+                    $(".s3").show();
+                    $(".s4").show();
+                    $(".s5").show();
+                    $("#hid").val("2");
+                });
+                $(".g3").click(function(){
+                    $(".s1").hide();
+                    $(".s2").hide();
+                    $(".g3").hide();
+                    $(".g4").hide();
+                    $(".g5").hide();
+                    $(".g1").show();
+                    $(".g2").show();
+                    $(".s3").show();
+                    $(".s4").show();
+                    $(".s5").show();
+                    $("#hid").val("2");
+                });
+                $(".s3").click(function(){
+                    $(".s1").hide();
+                    $(".s2").hide();
+                    $(".s3").hide();
+                    $(".g4").hide();
+                    $(".g5").hide();
+                    $(".g1").show();
+                    $(".g2").show();
+                    $(".g3").show();
+                    $(".s4").show();
+                    $(".s5").show();
+                    $("#hid").val("3");
+                });
+                $(".g4").click(function(){
+                    $(".s1").hide();
+                    $(".s2").hide();
+                    $(".s3").hide();
+                    $(".g4").hide();
+                    $(".g5").hide();
+                    $(".g1").show();
+                    $(".g2").show();
+                    $(".g3").show();
+                    $(".s4").show();
+                    $(".s5").show();
+                    $("#hid").val("3");
+                });
+                $(".s4").click(function(){
+                    $(".s1").hide();
+                    $(".s2").hide();
+                    $(".s3").hide();
+                    $(".s4").hide();
+                    $(".g5").hide();
+                    $(".g1").show();
+                    $(".g2").show();
+                    $(".g3").show();
+                    $(".g4").show();
+                    $(".s5").show();
+                    $("#hid").val("4");
+                });
+                $(".g5").click(function(){
+                    $(".s1").hide();
+                    $(".s2").hide();
+                    $(".s3").hide();
+                    $(".s4").hide();
+                    $(".g5").hide();
+                    $(".g1").show();
+                    $(".g2").show();
+                    $(".g3").show();
+                    $(".g4").show();
+                    $(".s5").show();
+                    $("#hid").val("4");
+                });
+                $(".s5").click(function(){
+                    $(".s1").hide();
+                    $(".s2").hide();
+                    $(".s3").hide();
+                    $(".s4").hide();
+                    $(".s5").hide();
+                    $(".g1").show();
+                    $(".g2").show();
+                    $(".g3").show();
+                    $(".g4").show();
+                    $(".g5").show();
+                    $("#hid").val("5");
+                });
+            });
+        </script>
         {% block script %}
         {% endblock %}
         <meta charset="UTF-8" />
@@ -12,14 +154,14 @@
             <a href="{% url 'wyszukiwanie' %}"> Wyszukiwanie podstawowe</a> |
              <a href="{% url 'zaawansowane' %}"> Wyszukiwanie szczegółowe</a> |
             <a href="{% url 'przegladanie' 0 %}"> Przeglądaj</a>
-            {% if user.is_authenticated %}
+            {% if auth %}
              | <a href="{% url 'moderate' %}"> Dodaj do Bazy</a>
             {%endif%}
         <span style="float:right;">
             {% if user.is_authenticated %}
               użytkownik:  <b>{{user.username}}</b>    <a href="/logout/">wyloguj się</a>
             {% else %}
-              <a href="/login/">zaloguj się</a>
+              <a href="/login/">zaloguj się</a> | <a href="/register/">zarejestruj się</a>
             {% endif %}
         </span>
         </p>
