@@ -79,7 +79,7 @@ class Silniki_Nadwozia(models.Model):
     Oplata = models.IntegerField(default='0')
 
     def __unicode__(self):
-        return str(self.Silnik) or u''
+        return str(self.Nadwozie) + str(self.Silnik) or u''
 
     class Meta:
         managed = False

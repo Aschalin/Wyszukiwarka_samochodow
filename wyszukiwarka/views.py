@@ -11,11 +11,32 @@ from wyszukiwarka.forms import *
 from base64 import b64encode
 from django.core.exceptions import ObjectDoesNotExist
 
-from wyszukiwarka.suport import handleComments
+from wyszukiwarka.support import *
 
 
 def index(request):
     c = {}
+    samochody = Samochody.objects.all()
+    for s in samochody:
+        s.rating = getRating(s.id)
+
+    samochody = sorted(samochody, key=lambda s: -s.rating)[:10]
+    nadwozia = Nadwozia.objects.all()
+    for n in nadwozia:
+        n.rating = getRating(str(n.Samochod.id) + '/' + str(n.id))
+    nadwozia = sorted(nadwozia, key=lambda s: -s.rating)[:10]
+    silniki = Silniki_Nadwozia.objects.all()
+    for s in silniki:
+        s.rating = getRating(str(s.Nadwozie.Samochod.id) + '/' + str(s.Nadwozie.id) + '/' + str(s.Silnik.id))
+    silniki = sorted(silniki, key=lambda s: -s.rating)[:10]
+    komentarze = Komentarze.objects.all().order_by('-Time')[:10]
+    for k in komentarze:
+        k.Time = k.Time.strftime("%y-%m-%d %H:%M:%S")
+        k.Site = getSite(k.site)
+    c['komentarze'] = komentarze
+    c['samochody'] = samochody
+    c['nadwozia'] =nadwozia
+    c['silniki'] =silniki
     c['auth'] = len(list(request.user.groups.all()))
     return render(request, "base.html", c)
 
@@ -35,7 +56,7 @@ def wyszukiwanie(request):
     return render(request, "wyszukiwanie.html", c)
 
 def zaawansowane(request):
-    c={}
+    c = {}
     c['auth'] = len(list(request.user.groups.all()))
     if request.method=='POST':
         form=AdvancedForm(request.POST)
@@ -149,7 +170,9 @@ def model(request, s_id, c_id):
     except TypeError:
         pass
     komentarze = handleComments(request)
+    rating = handleRating(handlePath(request.path))
     c.update(komentarze)
+    c.update(rating)
     c['auth'] = request.user.groups.filter(name = car.Marka).exists()
     c['files'] = files
     c['nadwozia'] = nadwozia
@@ -173,7 +196,9 @@ def nadwozie(request, s_id, c_id, n_id):
         f.Plik = b64encode(f.Plik)
     cenaMax = parametry.aggregate(Max('Oplata'))['Oplata__max']
     komentarze = handleComments(request)
+    rating = handleRating(handlePath(request.path))
     c.update(komentarze)
+    c.update(rating)
     c['auth'] = request.user.groups.filter(name = car.Marka).exists()
     c['cenaMax'] = cenaMax
     c['files'] = files
@@ -194,7 +219,9 @@ def silnik(request, s_id, c_id, n_id, e_id):
     parametry = parametry.filter(Nadwozie = nadwozie)
     parametry = parametry.filter(Silnik = silnik)
     komentarze = handleComments(request)
+    rating = handleRating(handlePath(request.path))
     c.update(komentarze)
+    c.update(rating)
     c['auth'] = request.user.groups.filter(name = car.Marka).exists()
     c['car'] = car
     c['s_id'] = s_id

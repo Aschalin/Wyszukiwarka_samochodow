@@ -167,5 +167,57 @@
         </p>
         <hr>
     {% block content %}
+    <table>
+    <tr><td><h2>Najwyżej oceniane:</h2><td><h2>Ostatnio komentowane:</h2></td></tr>
+        <tr><td><table>
+            <tr>
+                <td><strong>Modele</strong></td>
+                <td><strong>Nadwozia</strong></td>
+                <td><strong>Konfiguracje</strong></td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        {% for s in samochody %}
+                        <tr>
+                            <td><a href="/szczegoly/0/{{s.id}}"> {{s}}</a></td>
+                            <td>{{s.rating|floatformat:-2 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        {% for n in nadwozia %}
+                        <tr>
+                            <td><a href="/szczegoly/0/{{n.Samochod.id}}/{{n.id}}">{{n}}</a></td>
+                            <td>{{n.rating|floatformat:-2 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        {% for s in silniki %}
+                        <tr>
+                            <td><a href="/szczegoly/0/{{s.Nadwozie.Samochod.id}}/{{s.Nadwozie.id}}/{{s.Silnik.id}}">{{s}}</a></td>
+                            <td>{{s.rating|floatformat:-2 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+        </table></td>
+        <td><table>
+            <tr>
+                <td><strong>Strona</strong></td>
+                <td><strong>Autor</strong></td>
+                <td><strong>Data</strong></td>
+            </tr>
+            {% for k in komentarze %}
+                <tr><td><a href="/szczegoly/0/{{k.site}}">{{k.Site}}</a></td><td>{{k.User}}</td><td>{{k.Time}}</td></tr>
+            {% endfor %}
+        </table></td></tr>
+    </table>
     {% endblock %}
 </html>

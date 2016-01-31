@@ -3,8 +3,10 @@
 
 import MySQLdb as mdb
 import sys
+import warnings
 
 def marki():
+    print "\tCreating table: `wyszukiwarka_marki`...",
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_marki` (
                     `id` int(11) NOT NULL  AUTO_INCREMENT,
                     `Marka` varchar(30) NOT NULL,
@@ -13,12 +15,20 @@ def marki():
                     PRIMARY KEY (id))
                     ENGINE=MyISAM DEFAULT CHARSET=latin1;
                     """)
+    con.commit()
+    print "OK"
+    
+def populateMarki():
+    print "\tPopulating Table `wyszukiwarka_marki`...",
     cur.execute("""INSERT INTO `wyszukiwarka_marki` (`id`, `Marka`, `Kraj`, `WWW`) VALUES
                     (1, 'Audi', 'Niemcy', 'www.audi.pl'),
                     (2, 'Ford', 'USA', 'www.ford.pl');
                     """)
+    con.commit()
+    print "OK"
 
 def samochody():
+    print "\tCreating table: `wyszukiwarka_samochody`...",
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_samochody` (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
                     `Model` varchar(30) NOT NULL,
@@ -29,6 +39,11 @@ def samochody():
                     FOREIGN KEY (idMarka) REFERENCES wyszukiwarka_marki(id))
                     ENGINE=MyISAM DEFAULT CHARSET=latin1;
                     """)
+    con.commit()
+    print "OK"
+
+def populateSamochody():
+    print "\tPopulating Table `wyszukiwarka_samochody`...",
     cur.execute("""INSERT INTO `wyszukiwarka_samochody` (`id`, `Model`, `Rocznik`, `Cena`, `idMarka`) VALUES
                     (12, 'Tourneo Courier', 2015, 57503, 2),
                     (11, 'Tourneo Connect', 2015, 70602, 2),
@@ -55,8 +70,11 @@ def samochody():
                     (23, 'TT', 2015, 161600, 1),
                     (24, 'R8', 2015, 790800, 1);
                     """)
+    con.commit()
+    print "OK"
 
 def nadwozia():
+    print "\tCreating table: `wyszukiwarka_nadwozia`...",
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_nadwozia` (
                     `id` int(11) NOT NULL  AUTO_INCREMENT,
                     `Rodzaj` varchar(30) NOT NULL,
@@ -66,7 +84,11 @@ def nadwozia():
                     FOREIGN KEY (idSamochod) REFERENCES wyszukiwarka_samochody(id))
                     ENGINE=MyISAM DEFAULT CHARSET=latin1;
                     """)
-
+    con.commit()
+    print "OK"
+    
+def populateNadwozia():
+    print "\tPopulating Table `wyszukiwarka_nadwozia`...",
     cur.execute("""INSERT INTO `wyszukiwarka_nadwozia` (`id`, `Rodzaj`, `Oplata`, `idSamochod`) VALUES
                     (25, 'A1 Sportback', 0, 13),
                     (24, '5-drzwiowe', 0, 12),
@@ -137,8 +159,11 @@ def nadwozia():
                     (68, 'Roadster TTS', 64500, 23),
                     (26, '2-drzwiowe', 0, 24);
                     """)
+    con.commit()
+    print "OK"
 
 def silniki():
+    print "\tCreating table: `wyszukiwarka_marki`...",
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_silniki` (
                     `id` int(11) NOT NULL  AUTO_INCREMENT,
                     `Rodzaj` varchar(10) NOT NULL,
@@ -148,6 +173,11 @@ def silniki():
                     PRIMARY KEY (id))
                     ENGINE=MyISAM DEFAULT CHARSET=latin1;
                     """)
+    con.commit()
+    print "OK"
+    
+def populateSilniki():
+    print "\tPopulating Table `wyszukiwarka_silniki`...",
     cur.execute("""INSERT INTO `wyszukiwarka_silniki` (`id`, `Rodzaj`, `Paliwo`, `Pojemnosc`, `KM`) VALUES
                     (1, 'TFSI ultra', 'B', 1, 95),
                     (2, 'TFSI', 'B', 1.2, 110),
@@ -257,8 +287,11 @@ def silniki():
                     (106, 'TDI', 'D', 3, 313),
                     (107, 'TFSI', 'B', 2, 310);
                     """)
+    con.commit()
+    print "OK"
 
 def silnikiNadwozia():
+    print "\tCreating table: `wyszukiwarka_silniki_nadwozia`...",
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_silniki_nadwozia` (
                     `id` int(11) NOT NULL  AUTO_INCREMENT,
                     `Spalanie` double NOT NULL,
@@ -272,6 +305,11 @@ def silnikiNadwozia():
                     FOREIGN KEY (idSilnik) REFERENCES wyszukiwarka_silniki(id))
                     ENGINE=MyISAM DEFAULT CHARSET=latin1;
                     """)
+    con.commit()
+    print "OK"
+    
+def populateSilnikiNadwozia():
+    print "\tPopulating Table `wyszukiwarka_silniki_nadwozia`...",
     cur.execute("""INSERT INTO `wyszukiwarka_silniki_nadwozia` (`id`, `Spalanie`, `Przyspieszenie`, `VMax`, `Oplata`, `idNadwozie`, `idSilnik`) VALUES
                     (106, 7.3, 7.9, 240, 45700, 16, 29),
                     (105, 7.3, 8.7, 232, 38300, 16, 28),
@@ -563,8 +601,11 @@ def silnikiNadwozia():
                     (289, 4.3, 7.3, 237, 800, 67, 71),
                     (218, 0, 0, 0, 0, 68, 107);
                     """)
+    con.commit()
+    print "OK"
 
 def wyszukiwanie():
+    print "\tCreating table: `wyszukiwarka_wyszukiwanie`...",
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_wyszukiwanie` (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
                     `Marka` varchar(30) DEFAULT NULL,
@@ -576,8 +617,11 @@ def wyszukiwanie():
                     PRIMARY KEY (id))
                     ENGINE=MyISAM DEFAULT CHARSET=latin1;
                     """)
+    con.commit()
+    print "OK"
 
 def zaawansowane():
+    print "\tCreating table: `wyszukiwarka_zaawansowane`...",
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_zaawansowane` (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
                     `Spalanie_od`  double DEFAULT NULL,
@@ -594,8 +638,11 @@ def zaawansowane():
                     PRIMARY KEY (id))
                     ENGINE=MyISAM DEFAULT CHARSET=latin1;
                     """)
+    con.commit()
+    print "OK"
 
 def zdjecia():
+    print "\tCreating table: `wyszukiwarka_zdjecia`...",
     cur.execute("""CREATE TABLE IF NOT EXISTS `wyszukiwarka_zdjecia` (
                 `id` int(11) NOT NULL  AUTO_INCREMENT,
                 `plik` longBlob NOT NULL,
@@ -603,6 +650,11 @@ def zdjecia():
                 PRIMARY KEY (id),
                 FOREIGN KEY (idNadwozie) REFERENCES wyszukiwarka_nadwozia(id))
                 ENGINE=MyISAM  DEFAULT CHARSET=latin1;""")
+    con.commit()
+    print "OK"
+    
+def populateZdjecia():
+    print "\tPopulating Table `wyszukiwarka_zdjecia`...",
     cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
                     (69, 14, x'""" + readFile('photos/ka1.jpg') + """');""")
     cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
@@ -771,8 +823,11 @@ def zdjecia():
                     (67,67, x'""" + readFile('photos/67.jpg') + """');""")
     cur.execute("""INSERT INTO `wyszukiwarka_zdjecia` (`id`, `idNadwozie`, `Plik`) VALUES
                     (68,68, x'""" + readFile('photos/68.jpg') + """');""")
+    con.commit()
+    print "OK"
 
 def views():
+    print "\tCreating view: `wyszukiwarka_porownania`...",
     cur.execute("""CREATE OR REPLACE VIEW wyszukiwarka_porownania AS
                     SELECT concat(s.id, '/', n.id, '/', e.id) as id,
                     s.idMarka AS idMarka,
@@ -788,7 +843,9 @@ def views():
                     FROM
                     wyszukiwarka_silniki_nadwozia en join wyszukiwarka_silniki e on e.id=en.idSilnik join wyszukiwarka_nadwozia n on en.idNadwozie=n.id join wyszukiwarka_samochody s on s.id=n.idSamochod
                     """)
-
+    con.commit()
+    print "OK"
+    print "\tCreating view: `wyszukiwarka_silniki_parametry`...",
     cur.execute("""CREATE OR REPLACE VIEW wyszukiwarka_silniki_parametry AS
                 SELECT en.id as id,
                 concat(e.Pojemnosc, ' ', e.Rodzaj, ' ', e.KM) AS Silnik,
@@ -803,8 +860,12 @@ def views():
                 FROM
                 wyszukiwarka_silniki_nadwozia en join wyszukiwarka_silniki e on e.id=en.idSilnik
                 """)
+    con.commit()
+    print "OK"
 
 def dodatki():
+    print "\tCreating procedure: `samochodMaxPrice`...",
+    cur.execute("DROP PROCEDURE IF EXISTS `samochodMaxPrice`;")
     cur.execute("""CREATE
                     PROCEDURE `samochodMaxPrice`(IN `s_id` INT) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
                     SELECT en.id, MAX(n.Oplata + en.Oplata) AS Cena
@@ -812,6 +873,10 @@ def dodatki():
                     JOIN wyszukiwarka_nadwozia n ON en.idNadwozie = n.id
                     WHERE n.idSamochod = s_id
                     """)
+    con.commit()
+    print "OK"
+    print "\tCreating procedure: `nadwozieMaxPrice`...",
+    cur.execute("DROP PROCEDURE IF EXISTS `nadwozieMaxPrice`;")
     cur.execute("""CREATE
                     PROCEDURE `nadwozieMaxPrice`(IN `s_id` INT) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
                     SELECT n.id as id, max(en.Oplata) as Cena
@@ -820,6 +885,10 @@ def dodatki():
                     WHERE n.idSamochod = s_id
                     GROUP BY n.id
                     """)
+    con.commit()
+    print "OK"
+    print "\tCreating procedure: `defaultVersion`...",
+    cur.execute("DROP PROCEDURE IF EXISTS `defaultVersion`;")
     cur.execute("""CREATE
                     PROCEDURE `defaultVersion`(IN `s_id` INT) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
                     SELECT * FROM wyszukiwarka_porownania
@@ -829,11 +898,15 @@ def dodatki():
                         WHERE n.idSamochod = s_id AND(n.Oplata + en.Oplata) = 0
                     )
                     """)
+    con.commit()
+    print "OK"
 
 def readFile(path):
     with open(path, 'rb') as f:
         result = f.read()
     return "".join("{:02x}".format(ord(c)) for c in result)
+
+warnings.filterwarnings('ignore')
 
 try:
     con = mdb.connect('127.0.0.1', 'root', '', 'wyszukiwarka')
@@ -841,10 +914,7 @@ try:
     with con:
 
         cur = con.cursor()
-        cur.execute("SELECT VERSION()")
-        ver = cur.fetchone()
-        print "Database version : %s " % ver
-
+        print "Populating Database:"
         marki()
         samochody()
         nadwozia()
@@ -853,8 +923,24 @@ try:
         wyszukiwanie()
         zaawansowane()
         zdjecia()
-        #dodatki()
+        cur.execute("TRUNCATE `wyszukiwarka_marki`;")
+        cur.execute("TRUNCATE `wyszukiwarka_nadwozia`;")
+        cur.execute("TRUNCATE `wyszukiwarka_samochody`;")
+        cur.execute("TRUNCATE `wyszukiwarka_silniki`;")
+        cur.execute("TRUNCATE `wyszukiwarka_silniki_nadwozia`;")
+        cur.execute("TRUNCATE `wyszukiwarka_wyszukiwanie`;")
+        cur.execute("TRUNCATE `wyszukiwarka_zaawansowane`;")
+        cur.execute("TRUNCATE `wyszukiwarka_zdjecia`;")
+        cur.execute("TRUNCATE `wyszukiwarka_komentarze`;")
+        con.commit()
+        populateMarki()
+        populateNadwozia()
+        populateSamochody()
+        populateSilniki()
+        populateSilnikiNadwozia()
+        populateZdjecia()
         views()
+        dodatki()
 
 except mdb.Error, e:
     print "Error %d: %s" % (e.args[0],e.args[1])
