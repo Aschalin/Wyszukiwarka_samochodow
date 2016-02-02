@@ -1,11 +1,10 @@
 {% extends "base.html"%}
 {% block content %}
 <h2>Logowanie</h2>
-Logowanie jest wymagane, jeżeli chcesz edytować bazę danych.
 <form method="post" action=".">
     {% csrf_token %}
     <div style="text-align:left";>{{ form.as_p }}</div>
-    <input type="hidden" name="next" value="/moderate/" />
+    <input type="hidden" name="next" value="/" />
     <input type="submit" value="Logowanie"/>
     <input type="reset" value="Wartości domyślne"/>
 </form>
